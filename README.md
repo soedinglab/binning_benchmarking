@@ -8,7 +8,7 @@ Reads are corrected by CoCo (https://github.com/soedinglab/CoCo). The correction
 
 `cat *_reads.fq > all_reads.fq`
 
-**Compute k-mer counts using dsk tool (https://github.com/GATB/dsk)**
+**Compute k-mer counts using dsk tool** (https://github.com/GATB/dsk)
 
 `dsk -file all_reads.fq -kmer-size 41` (output: all_reads.h5)
 
@@ -27,7 +27,7 @@ Reads are corrected by CoCo (https://github.com/soedinglab/CoCo). The correction
 
 ## Reassembly
 
-** Extract mapped reads for each bin **
+**Extract mapped reads for each bin**
 
 For combined read fastq and mapfile
 
