@@ -35,4 +35,7 @@ For combined read fastq and mapfile
 
 For sample-wise processing, end extracted fastq file will have reads from all samples
 
-`for sample in samplelist; do extractreads fullpath/genomeface_results/ ${sample}_mapfile ${sample}_reads.corr.fq; done`
+    for sample in samplelist;
+    do
+        extractreads fullpath/genomeface_results/ ${sample}_mapfile ${sample}_reads.corr.fq; 
+    done
