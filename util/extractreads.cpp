@@ -140,10 +140,10 @@ void extractreads(const std::string& infastq, ReadBinPairs& readbinpairs) {
 int main(int argc, char *argv[]) {
 
     if (argc == 1 || strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) {
-        std::cerr << "extractreads inputdir mapfile input.fastq -f (optional, default=fasta)" << "\n";
+        std::cerr << "extractreads inputdir mapfile inputreads.fastq -f (optional, default=fasta)" << "\n";
         return 1;
     }
-    if (argc > 5) {
+    if (argc > 6) {
         std::cerr << "you gave more input arguments!\n";
         return 1;
     }
