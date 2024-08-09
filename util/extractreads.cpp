@@ -108,7 +108,7 @@ void extractreads(const std::string& infastq, ReadBinPairs& readbinpairs) {
         std::string read_id = (endpos == std::string::npos) ? line.substr(1) : line.substr(1, endpos - 1);
 
         auto it = readbinpairs.find(read_id);
-        if (it != readbinpairs.end()) {
+        if (it != readbinpairs.end() && line[0] == '@') {
             const std::string& fastqfilename = it->second;
             if (outfiles.find(fastqfilename) == outfiles.end()) {
                 outfiles[fastqfilename].open(fastqfilename, std::ios::app);
