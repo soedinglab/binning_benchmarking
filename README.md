@@ -18,7 +18,7 @@ Reads are corrected by CoCo (https://github.com/soedinglab/CoCo). The correction
 
 **Split reads by sample origin**
 
-`awk '{if(NR%4==1) {sample=substr($1, 3, 1)} print $0 >> "allreads_coco_corrected/"sample"_reads.corr.fq"}' allreads_coco_corrected/all_reads.corr.reads.fq`
+`splitreadsbysample sample_id reads.fq outdir`
 
 
 
@@ -39,3 +39,5 @@ For sample-wise processing, end extracted fastq file will have reads from all sa
     do
         extractreads fullpath/genomeface_results/ ${sample}_mapfile ${sample}_reads.corr.fq; 
     done
+
+
