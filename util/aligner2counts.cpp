@@ -614,7 +614,7 @@ int main(int argc, char *argv[]) {
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::seconds>(stop - start);
 
-    std::cout << "Alignment file processed in " << duration.count() << " seconds\n";
+    std::cout << "Alignment file for sample " << outputname << " processed in " << duration.count() << " seconds\n";
 
     return EXIT_SUCCESS;
 }
