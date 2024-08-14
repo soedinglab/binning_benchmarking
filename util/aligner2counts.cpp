@@ -456,7 +456,7 @@ void write_counts(
         crossfile << k.first << " " << outputname << " " << data.cross_count << "\n";
         if (coverage) {
             contig_cov =  (data.total_count * readlength) / contigs_len.at(k.first);
-            coveragefile << k.first << " " << contig_cov << "\n";
+            coveragefile << k.first << " " << outputname << " " << contig_cov << "\n";
         }
     }
     outfile.close();
