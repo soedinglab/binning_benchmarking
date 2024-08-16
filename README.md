@@ -18,8 +18,10 @@ Reads are corrected by CoCo (https://github.com/soedinglab/CoCo). The correction
 
 **Split reads by sample origin**
 
-`splitreadsbysample sample_id reads.fq outdir`
+`splitreadsbysample <sampleid_file> <fastq_file> <outdir>`
 
+
+## Prepare abundance file from aligner output
 
 
 
@@ -31,13 +33,13 @@ Reads are corrected by CoCo (https://github.com/soedinglab/CoCo). The correction
 
 For combined read fastq and mapfile
 
-`extractreads fullpath/genomeface_results/ allsample_mapfile all_reads.corr.fq`
+`extractreads <fullpath/binfastafolder> <allsample_mapfile> <all_reads.corr.fq>`
 
 For sample-wise processing, end extracted fastq file will have reads from all samples
 
     for sample in samplelist;
     do
-        extractreads fullpath/genomeface_results/ ${sample}_mapfile ${sample}_reads.corr.fq; 
+        extractreads fullpath/binfastafolder ${sample}_mapfile ${sample}_reads.corr.fq; 
     done
 
 
