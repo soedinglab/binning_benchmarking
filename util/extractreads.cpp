@@ -59,7 +59,6 @@ ContigBinPairs processfastafiles(std::string inputdir, std::string& format){
         IDsList contig_ids = extractContigIDsFromFasta(filepath);
         // Replace .fasta with .fastq
         std::string fastqfilename = filepath.substr(0, filepath.find_last_of('.')) + ".fastq";
-
         for (const auto& contig_id : contig_ids) {
             contigbinpairs[contig_id] = fastqfilename;
             // std::cout << contig_id << " " << fastqfilename << '\n';
@@ -72,6 +71,10 @@ ContigBinPairs processfastafiles(std::string inputdir, std::string& format){
 // Function to process map file that contains list of reads mapped to contigs
 ReadBinPairs processMapFile(ContigBinPairs& contigbinpairs, const std::string& mapfile) {
     std::ifstream file(mapfile);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open the file " << mapfile << std::endl;
+        return ReadBinPairs();
+    }
     std::string line;
     ReadBinPairs readbinpairs;
     while (std::getline(file, line)) {    
@@ -140,7 +143,7 @@ void extractreads(const std::string& infastq, ReadBinPairs& readbinpairs) {
 int main(int argc, char *argv[]) {
 
     if (argc == 1 || strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) {
-        std::cerr << "extractreads inputdir mapfile inputreads.fastq -f (optional, default=fasta)" << "\n";
+        std::cerr << "extractreads absolutepath_bindir mapfile inputreads.fastq -f (bin format, default=fasta, optional)" << "\n";
         return 1;
     }
     if (argc > 6) {
@@ -164,13 +167,15 @@ int main(int argc, char *argv[]) {
     std::string mapfile = argv[2];
     // input fastq file to extract read (pooled reads, recommended)
     std::string infastq = argv[3];
-    
+
     // Load contig IDs from all bin files
     ContigBinPairs contigbinpairs = processfastafiles(bindir, format);
     // Load read IDs from all each count file
     ReadBinPairs readbinpairs = processMapFile(contigbinpairs, mapfile);
-
-
+    if (readbinpairs.empty()) {
+        std::cerr << "Error: Mapfile is empty." << std::endl;
+        return 1;
+    }
     // Extract reads by IDs
     extractreads(infastq, readbinpairs);
 
