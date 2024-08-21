@@ -12,6 +12,13 @@ using IDsList = std::unordered_set<std::string>;
 using ContigBinPairs = std::unordered_map<std::string, std::string>;
 using ReadBinPairs = std::unordered_map<std::string, std::string>;
 
+
+std::string trim(const std::string& str) {
+    auto start = str.find_first_not_of(" \t\n\r\f\v");
+    auto end = str.find_last_not_of(" \t\n\r\f\v");
+    return (start == std::string::npos || end == std::string::npos) ? "" : str.substr(start, end - start + 1);
+}
+
 // get contig ids from a bin file
 IDsList extractContigIDsFromFasta(const std::string& binfasta) {
     std::unordered_set<std::string> contig_ids;
@@ -20,8 +27,14 @@ IDsList extractContigIDsFromFasta(const std::string& binfasta) {
     while (std::getline(file, line)) {
         if (!line.empty() && line[0] == '>') {
             // remove > character
-            std::string contig_id = line.substr(1);
-            contig_ids.insert(contig_id);
+            size_t end_pos = line.find(' ');
+            std::string contig_id;
+            if (end_pos != std::string::npos) {
+                contig_id = line.substr(1, end_pos-1);
+            } else {
+                contig_id = line.substr(1);
+            }
+            contig_ids.insert(trim(contig_id));
         }
     }
     return contig_ids;
@@ -65,7 +78,6 @@ ContigBinPairs processfastafiles(std::string inputdir, std::string& format){
             // std::cout << contig_id << " " << fastqfilename << '\n';
         }
     }
-
     return contigbinpairs;
 
 }
@@ -78,14 +90,17 @@ ReadBinPairs processMapFile(ContigBinPairs& contigbinpairs, const std::string& m
     }
     std::string line;
     ReadBinPairs readbinpairs;
-    while (std::getline(file, line)) {    
+
+    while (std::getline(file, line)) {
         size_t pos = line.find(' ');
         if (pos != std::string::npos) {
             std::string read_id = line.substr(0, pos);
             std::string contig_id = line.substr(pos + 1);
             pos = contig_id.find(' ');
-            contig_id = contig_id.substr(0, pos);
-            auto it = contigbinpairs.find(contig_id);
+            if (pos != std::string::npos) {
+                contig_id = contig_id.substr(0, pos-1);
+            }
+            auto it = contigbinpairs.find(trim(contig_id));
             if (it != contigbinpairs.end()) {
                 readbinpairs[read_id] = it->second;
             }
