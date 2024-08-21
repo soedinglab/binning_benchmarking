@@ -59,6 +59,15 @@ ContigBinPairs processfastafiles(std::string inputdir, std::string& format){
         IDsList contig_ids = extractContigIDsFromFasta(filepath);
         // Replace .fasta with .fastq
         std::string fastqfilename = filepath.substr(0, filepath.find_last_of('.')) + ".fastq";
+        FILE* file = std::fopen(fastqfilename.c_str(), "r");
+        if (file) {
+            std::fclose(file); // Close the file if it was successfully opened
+            if (std::remove(fastqfilename.c_str()) == 0) {
+                std::cout << "File removed: " << fastqfilename << std::endl;
+            } else {
+                std::cerr << "Error removing file: " << fastqfilename << std::endl;
+            }
+        }
         for (const auto& contig_id : contig_ids) {
             contigbinpairs[contig_id] = fastqfilename;
             // std::cout << contig_id << " " << fastqfilename << '\n';
