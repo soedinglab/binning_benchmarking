@@ -231,7 +231,7 @@ void storealnstats(AlnParser &parsedaln, AlnStat &alnstats, std::string &current
     }
 }
 
-void counting(AlnParser &parsedaln, ContigsMap &contigs_map, ContigLinks &contig_links, float &sequenceidentity) {
+void counting(AlnParser &parsedaln, ContigsMap &contigs_map, ContigLinks &contig_links, float &sequenceidentity, AlnMapids& alnmapids) {
     if (parsedaln.empty()) return;
     auto max_it = std::max_element(parsedaln.begin(), parsedaln.end(),
         [](const al_data& a,const al_data& b)
@@ -275,6 +275,8 @@ void counting(AlnParser &parsedaln, ContigsMap &contigs_map, ContigLinks &contig
                 ContigData& data = contigs_map[parsedaln[0].contig];
                 data.total_count += 1.0f;
                 data.unique_count += 1.0f;
+                std::pair<std::string, std::string> pair = std::make_pair(parsedaln[0].read, parsedaln[0].contig);
+                alnmapids.insert(pair);
                 // mapids << parsedaln[0].read << " " << parsedaln[0].contig << " " << parsedaln[0].pair_dir << " " << parsedaln[0].paired << " " << parsedaln.size() << " " << parsedaln[0].sequence_identity << "\n";
             } else {    
                 std::vector<std::string> contiglist;
@@ -283,6 +285,8 @@ void counting(AlnParser &parsedaln, ContigsMap &contigs_map, ContigLinks &contig
                     ContigData& data = contigs_map[aln.contig];
                     data.total_count += frac_contigs_mapped;
                     data.cross_count += frac_contigs_mapped;
+                    std::pair<std::string, std::string> pair = std::make_pair(aln.read, aln.contig);
+                    alnmapids.insert(pair);
                     // mapids << aln.read << " " << aln.contig << " " << aln.pair_dir << " " << aln.paired << " " << parsedaln.size() << " " << aln.sequence_identity << "\n";
                 }
                 // add shared reads links to contigs
@@ -358,7 +362,6 @@ void process_alignment_line(
     AlnParser& parsedaln,
     float sequenceidentity,
     float read_coverage,
-    bool onlymapids,
     AlnMapids& alnmapids) {
     if (contigs_map.size() == 0) {
         std::cerr << "Input sam/bam file doesn't has header. Please provide input file with header \n";
@@ -373,66 +376,65 @@ void process_alignment_line(
     // No reference or not of minimum length, don't process the alignment;
     if ((contig_id == "*") || (contigs_map.find(contig_id) == contigs_map.end())) return;
 
-    // Store read-contig pairs of all alignment lines without applying any conditions
-    std::pair<std::string, std::string> pair = std::make_pair(currentread_id, contig_id);
-    alnmapids.insert(pair);
+    // // Store read-contig pairs of all alignment lines without applying any conditions
+    // std::pair<std::string, std::string> pair = std::make_pair(currentread_id, contig_id);
+    // alnmapids.insert(pair);
     
-    if (!onlymapids) {
-        iss >> field >> field >> cigar_str;
-        if (cigar_str.find_first_of("IDNPH*") != std::string::npos) {
-            // indel, hard clipping, don't process the alignment;
-            if (bitflag & PAIRED_FLAG && !parsedaln.empty()) {
-                parsedaln.erase(std::remove_if(parsedaln.begin(), parsedaln.end(),
-                [contig_id](const al_data& element) {
-                    return element.contig == contig_id;
-                }),
-                parsedaln.end());
-            }
-            return; 
+    iss >> field >> field >> cigar_str;
+    if (cigar_str.find_first_of("IDNPH*") != std::string::npos) {
+        // indel, hard clipping, don't process the alignment;
+        if (bitflag & PAIRED_FLAG && !parsedaln.empty()) {
+            parsedaln.erase(std::remove_if(parsedaln.begin(), parsedaln.end(),
+            [contig_id](const al_data& element) {
+                return element.contig == contig_id;
+            }),
+            parsedaln.end());
         }
+        return; 
+    }
 
-        iss >> field >> field >> field >> field >> qual_str >> field >> field;
-        if (field.find("XS") != std::string::npos) {
-            // suboptimal alignment score is given;
-            iss >> field >> field >> field >> field >> field >> md_str;
-        } else {
-            iss >> field >> field >> field >> field >> md_str;
+    iss >> field >> field >> field >> field >> qual_str >> field >> field;
+    if (field.find("XS") != std::string::npos) {
+        // suboptimal alignment score is given;
+        iss >> field >> field >> field >> field >> field >> md_str;
+    } else {
+        iss >> field >> field >> field >> field >> md_str;
+    }
+
+    md_str = md_str.substr(5, md_str.length());
+
+    auto alnpos = get_alnpos(cigar_str);
+
+    // clip at both ends, don't process the alignment;
+    if (std::get<1>(alnpos) == 0) return;
+
+    auto alnstats = get_seqid_alncov(alnpos, qual_str, md_str);
+
+    if ((!std::isnan(alnstats.first)) && (alnstats.second >= read_coverage)) {
+        // get read direction
+        // TODO: check this is required for single end
+        unsigned int pair_dir = (bitflag & FORWARD_FLAG) ? 1: (bitflag & REVERSE_FLAG) ? 2: 0;
+        if (pair_dir == 0){
+            std::cerr << "input reads are not paired\n";
+            exit(1);
         }
+        
+        // get if alignment is paired
+        bool proper_pair = bitflag & PAIRED_FLAG;
 
-        md_str = md_str.substr(5, md_str.length());
-
-        auto alnpos = get_alnpos(cigar_str);
-
-        // clip at both ends, don't process the alignment;
-        if (std::get<1>(alnpos) == 0) return;
-
-        auto alnstats = get_seqid_alncov(alnpos, qual_str, md_str);
-
-        if ((!std::isnan(alnstats.first)) && (alnstats.second >= read_coverage)) {
-            // get read direction
-            // TODO: check this is required for single end
-            unsigned int pair_dir = (bitflag & FORWARD_FLAG) ? 1: (bitflag & REVERSE_FLAG) ? 2: 0;
-            if (pair_dir == 0){
-                std::cerr << "input reads are not paired\n";
-                exit(1);
+        if (parsedaln.empty() || parsedaln.rbegin()->read != currentread_id) {
+            // new read alignment
+            if (!parsedaln.empty()) {
+                counting(parsedaln, contigs_map, contiglinks, sequenceidentity, alnmapids);
+                parsedaln.clear();
             }
-            
-            // get if alignment is paired
-            bool proper_pair = bitflag & PAIRED_FLAG;
-
-            if (parsedaln.empty() || parsedaln.rbegin()->read != currentread_id) {
-                // new read alignment
-                if (!parsedaln.empty()) {
-                    counting(parsedaln, contigs_map, contiglinks, sequenceidentity);
-                    parsedaln.clear();
-                }
-                // store new read alignment
-                parsedaln.push_back({currentread_id, contig_id, pair_dir, proper_pair, alnstats.first});
-            } else { // continue store alignment of current read
-                storealnstats(parsedaln, alnstats, currentread_id, contig_id, pair_dir, proper_pair);
-            }
+            // store new read alignment
+            parsedaln.push_back({currentread_id, contig_id, pair_dir, proper_pair, alnstats.first});
+        } else { // continue store alignment of current read
+            storealnstats(parsedaln, alnstats, currentread_id, contig_id, pair_dir, proper_pair);
         }
     }
+
 }
 
 void write_counts(
@@ -510,7 +512,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "                      This flag disables the output of contig coverage.\n\n";
         std::cerr << "  --single            Process input as single-end reads. (Optional)\n";
         std::cerr << "                      By default, paired-end reads are expected unless this flag is set.\n\n";
-        std::cerr << "  --only-mapids       Output only the mapping identifiers. (Optional)\n";
+        std::cerr << "  --only-mapids       Output only the mapped pairs of read and contig identifiers. (Optional)\n";
         std::cerr << "                      This flag restricts the output to just the IDs of reads and mapped contigs.\n\n";
         std::cerr << "  --qcov X            Minimum query/read coverage threshold X. (Optional, default=99.0%)\n";
         std::cerr << "                      Specifies the minimum percentage of query sequence that must be aligned.\n\n";
@@ -564,7 +566,7 @@ int main(int argc, char *argv[]) {
     float read_coverage = qcov;
     std::ofstream samfile;
     std::ofstream mapids(outdir + '/' + outputname + "_mapids");
-    if (! onlymapids) {
+    if (!onlymapids) {
         samfile.open(outdir + '/' + outputname + ".sam",  std::ios::binary);
         std::cout << "Output name:" << outputname << "\n";
         std::cout << "Minimum length:" << minlength << "\n";
@@ -576,7 +578,7 @@ int main(int argc, char *argv[]) {
     std::string line;
     while(std::getline(std::cin, line)) {
         // write all line before applying any conditions and proceed with continue
-        if (! onlymapids) {
+        if (!onlymapids) {
             samfile.write(line.c_str(), line.size());
             samfile.put('\n');
         }
@@ -585,25 +587,20 @@ int main(int argc, char *argv[]) {
         if (line[0] == '@') {
             process_header_line(line, contigs_map, contigs_len, minlength);
         } else {
-            process_alignment_line(line, contigs_map, contiglinks, parsedaln, sequenceidentity, read_coverage, onlymapids, alnmapids);
+            process_alignment_line(line, contigs_map, contiglinks, parsedaln, sequenceidentity, read_coverage, alnmapids);
         }
     }
     // while end
+    // process last read alignment(s)
+    counting(parsedaln, contigs_map, contiglinks, sequenceidentity, alnmapids);
     if (!onlymapids) {
-        std::cout << "completed all lines\n";
-        counting(parsedaln, contigs_map, contiglinks, sequenceidentity); // process last read alignment(s)
-        std::cout << "completed counting \n";
         fractionate_countlinks(contiglinks, contigs_map, outdir, outputname);
-        std::cout << "completed fractionate countlinks \n";
         // multiple read length by 2 if paired-end reads
         if (paired) {
             readlength = readlength * 2;
         }
-
         write_counts(outdir, outputname, contigs_map, contigs_len, coverage);
-        std::cout << "completed write counts \n";
         samfile.close();
-
     }
 
     for (const auto& pair : alnmapids) {
