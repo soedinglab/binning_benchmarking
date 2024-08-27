@@ -130,7 +130,7 @@ std::pair<int, int> get_alnpos(std::string &cigar_str) {
         }
     }
 
-    if (readlength != 1) {
+    if (readlength < 0) {
         readlength = start + end;
     }
     // } else {
@@ -153,17 +153,6 @@ std::pair<float, float> get_seqid_alncov(std::pair<int, int> &alnpos, std::strin
 
     int start = alnpos.first;
     int end = alnpos.second;
-
-    // int start = std::get<0>(alnpos);
-    // int end = std::get<1>(alnpos);
-    // if(!std::get<2>(alnpos)) {
-    //     // Alignment starts from the beginning
-    //     // It means hard clip
-    //     // In the current version we ignore hard clip alignment
-    //     // Hence, it this condition is not necessary
-    //     start = 0;
-    //     end = end - start;
-    // }
 
     unsigned int alignment_length = end - start;
 
@@ -210,6 +199,82 @@ std::pair<float, float> get_seqid_alncov(std::pair<int, int> &alnpos, std::strin
     seq_id = (static_cast<float>(matches) * 100) / (matches+mismatches);
     alignment_coverage = (static_cast<float>(alignment_length) * 100) / (qual_str.length() + start); // account for variable read length
     // std::cout << matches << " matches " << mismatches << " mismatches " <<  seq_id << " " << alignment_coverage << " " << matches+mismatches << " in alnstats \n";
+    return std::make_pair(seq_id, alignment_coverage);
+}
+
+void count_match_mismatch(int& length, unsigned int& read_pos, unsigned int& mm, const std::string & qual_str) {
+    for (int i = 0; i < length; ++i) {
+        if (read_pos < qual_str.size() && qual_str[read_pos] >= 20 + 33) {
+            mm++;
+        }
+    read_pos++;
+    }
+}
+
+std::pair<float, float> get_seqid_alncov_strobealign(const std::string& cigar_str, const std::string& qual_str) {
+    unsigned int matches = 0;
+    unsigned int mismatches = 0;
+    unsigned int start = 0, end = 0;
+    unsigned int cigar_pos = 0;
+    bool visited_aligned_region = false;
+
+    unsigned int read_pos = 0;  // Position in the read, accounting for the start position in the CIGAR
+    
+    std::istringstream ss(cigar_str);
+    char alnstate;
+    int length;
+
+    if (readlength < 0) {
+        readlength = qual_str.length();
+    }
+    while (ss >> length >> alnstate) {
+        switch (alnstate) {
+            case 'S':
+                // Always softclip occurs at the start or end of the alignment
+                if (visited_aligned_region) {
+                    // End soft clip means we've reached the end of the alignment
+                    end = read_pos;
+                } else {
+                    // Start soft clip means the start of the alignment is after this
+                    start = read_pos + length;
+                }
+                read_pos += length;
+                break;
+            case '=':  // Matches
+                visited_aligned_region = true;
+                count_match_mismatch(length, read_pos, matches, qual_str);
+                break;
+            case 'X':  // Mismatches
+                visited_aligned_region = true;
+                count_match_mismatch(length, read_pos, mismatches, qual_str);
+                break;
+            default:
+                std::cerr << "Unknown CIGAR or not accepted operation in the alignment: " << alnstate << std::endl;
+                exit(1);
+        }
+    }
+
+    if (visited_aligned_region) {
+        end = read_pos;
+    }
+    unsigned int alignment_length = end - start;
+
+    // Calculate sequence identity and alignment coverage
+    float seq_id, alignment_coverage;
+
+    if (!(matches + mismatches > 0)) {
+        std::cerr << "Zero matches and mismatches. Something wrong with the alignment\n";
+        exit(1);
+    }
+
+    if (qual_str.empty()) {
+        std::cerr << "Zero quality string length. Something wrong with the alignment\n";
+        exit(1);
+    }
+
+    seq_id = (static_cast<float>(matches) * 100) / (matches + mismatches);
+    alignment_coverage = (static_cast<float>(alignment_length) * 100) / (qual_str.length() + start);
+
     return std::make_pair(seq_id, alignment_coverage);
 }
 
@@ -291,7 +356,7 @@ void counting(AlnParser &parsedaln, ContigsMap &contigs_map, ContigLinks &contig
                 }
                 // add shared reads links to contigs
                 for (std::size_t i = 0; i < contiglist.size(); ++i) {
-                    for (std::size_t j = i + 1; j < contiglist.size(); ++j) {;
+                    for (std::size_t j = i + 1; j < contiglist.size(); ++j) {
                         addpairlinks(contig_links, contiglist[i], contiglist[j], frac_contigs_mapped);
                     }
                 }
@@ -330,7 +395,7 @@ void fractionate_countlinks(ContigLinks &contiglinks, ContigsMap &contigs_map, s
         float normalize_factor = std::min(count_1, count_2);
         if (frac_links > normalize_factor) {
             frac_links = normalize_factor;
-            std::cout << "fraction link count is greater than the minimum total counts of a pair. Revisit the code \n";
+            std::cerr << "Error: fraction link count is greater than the minimum total counts of a pair. Revisit the code \n";
         }
         frac_links /= normalize_factor;
 
@@ -362,7 +427,8 @@ void process_alignment_line(
     AlnParser& parsedaln,
     float sequenceidentity,
     float read_coverage,
-    AlnMapids& alnmapids) {
+    AlnMapids& alnmapids,
+    bool& strobealign) {
     if (contigs_map.size() == 0) {
         std::cerr << "Input sam/bam file doesn't has header. Please provide input file with header \n";
         exit(1);
@@ -394,21 +460,32 @@ void process_alignment_line(
     }
 
     iss >> field >> field >> field >> field >> qual_str >> field >> field;
-    if (field.find("XS") != std::string::npos) {
-        // suboptimal alignment score is given;
-        iss >> field >> field >> field >> field >> field >> md_str;
+    
+    std::pair<float, float> alnstats;
+    if (!strobealign) {
+        try {
+            if (field.find("XS") != std::string::npos) {
+                // suboptimal alignment score is given;
+                iss >> field >> field >> field >> field >> field >> md_str;
+            } else {
+                iss >> field >> field >> field >> field >> md_str;
+            }
+            md_str = md_str.substr(5, md_str.length());
+        } catch (const std::exception& e) {
+            std::cerr << "Error: Input sam file should be in bowtie2 format\n";
+            std::cerr << "This tool support bowtie2 (default) or strobealign format only!\n";
+            std::cerr << "Use --strobealign flag if alignment was generated using strobealign\n";
+            exit(1);
+        }
+        auto alnpos = get_alnpos(cigar_str);
+
+        // clip at both ends, don't process the alignment;
+        if (std::get<1>(alnpos) == 0) return;
+
+        alnstats = get_seqid_alncov(alnpos, qual_str, md_str);
     } else {
-        iss >> field >> field >> field >> field >> md_str;
+        alnstats = get_seqid_alncov_strobealign(cigar_str, qual_str);
     }
-
-    md_str = md_str.substr(5, md_str.length());
-
-    auto alnpos = get_alnpos(cigar_str);
-
-    // clip at both ends, don't process the alignment;
-    if (std::get<1>(alnpos) == 0) return;
-
-    auto alnstats = get_seqid_alncov(alnpos, qual_str, md_str);
 
     if ((!std::isnan(alnstats.first)) && (alnstats.second >= read_coverage)) {
         // get read direction
@@ -462,8 +539,8 @@ void write_counts(
         }
     }
     outfile.close();
-    uniquefile.close();
     crossfile.close();
+    uniquefile.close();
     if (coverage) {
         coveragefile.close();
     }
@@ -488,6 +565,7 @@ int main(int argc, char *argv[]) {
     bool coverage = true;
     bool paired = true;
     bool onlymapids = false;
+    bool strobealign = false;
     float qcov = 99.0f;
     float seq_id = 97.0f;
 
@@ -496,13 +574,14 @@ int main(int argc, char *argv[]) {
         {"no-coverage", no_argument, 0, 'c'},
         {"single", no_argument, 0, 'p'},
         {"only-mapids", no_argument, 0, 'm'},
+        {"strobealign", no_argument, 0, 'r'},
         {"qcov", required_argument, 0, 'q'},
         {"seq-id", required_argument, 0, 's'},
         {0, 0, 0, 0}
     };
     
     if (argc < 3 || strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) {
-        std::cerr << "Usage: aligner command | "<< argv[0] << " outdir outputname [--minlength N] [--no-coverage] [--single] [--only-mapids] [--qcov X] [--seq-id Y]\n";
+        std::cerr << "Usage: aligner command | "<< argv[0] << " outdir outputname [--minlength N] [--no-coverage] [--single] [--only-mapids] [--qcov X] [--seq-id Y] [--strobealign]\n";
         std::cerr << "Options:\n";
         std::cerr << "  <outdir>            Directory where output files will be stored.\n";
         std::cerr << "  <outputname>        Base name for the output files (without extensions).\n\n";
@@ -528,7 +607,7 @@ int main(int argc, char *argv[]) {
     // Parse optional arguments
     int option_index = 0;
     int opt;
-    while ((opt = getopt_long(argc, argv, "cpmq:s:", long_options, &option_index)) != -1) {
+    while ((opt = getopt_long(argc, argv, "cpmrq:s:", long_options, &option_index)) != -1) {
         switch (opt) {
             case 'c':
                 coverage = false;
@@ -538,6 +617,9 @@ int main(int argc, char *argv[]) {
                 break;
             case 'm':
                 onlymapids = true;
+                break;
+            case 'r':
+                strobealign = true;
                 break;
             case 'q':
                 qcov = std::stof(optarg);
@@ -587,8 +669,12 @@ int main(int argc, char *argv[]) {
         if (line[0] == '@') {
             process_header_line(line, contigs_map, contigs_len, minlength);
         } else {
-            process_alignment_line(line, contigs_map, contiglinks, parsedaln, sequenceidentity, read_coverage, alnmapids);
+            process_alignment_line(line, contigs_map, contiglinks, parsedaln, sequenceidentity, read_coverage, alnmapids, strobealign);
         }
+    }
+    if (readlength < 0) {
+        std::cerr << "Error: readlength is not computed\n";
+        exit(1);
     }
     // while end
     // process last read alignment(s)
