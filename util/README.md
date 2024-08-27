@@ -16,30 +16,32 @@ Require gcc version `>=9.4.0`
 
 
 # Usage
-	Usage: aligner command | aligner2counts outdir outputname [--minlength N] [--no-coverage] [--single] [--only-mapids] [--qcov X] [--seq-id Y]
+	Usage: aligner command | ./aligner2counts outdir outputname [--minlength N] [--no-coverage] [--single] [--only-mapids] [--qcov X] [--seq-id Y] [--strobealign]
 	Options:
-  	<outdir>            Directory where output files will be stored.
-  	<outputname>        Base name for the output files (without extensions).
+	<outdir>            Directory where output files will be stored.
+	<outputname>        Base name for the output files (without extensions).
 
- 	 --minlength N      Minimum length of contigs to be considered. (Default: N=1000)
-  	                    Alignments for contigs shorter than this length will be ignored.
+	--minlength N       Minimum length of contigs to be considered. (Default: N=1000)
+						Alignments for contigs shorter than this length will be ignored.
 
-  	--no-coverage       Do not output coverage. (Optional)
-  	                    This flag disables the output of contig coverage.
-	
-  	--single            Process input as single-end reads. (Optional)
-  	                    By default, paired-end reads are expected unless this flag is set.
+	--no-coverage       Do not output coverage. (Optional)
+						This flag disables the output of contig coverage.
 
-  	--only-mapids       Output only the mapping identifiers. (Optional)
-  	                    This flag restricts the output to just the IDs of reads and mapped contigs.
+	--single            Process input as single-end reads. (Optional)
+						By default, paired-end reads are expected unless this flag is set.
 
-  	--qcov X            Minimum query/read coverage threshold X. (Optional, default=99.0%)
-  	                    Specifies the minimum percentage of query sequence that must be aligned.
+	--strobealign       Alignment is generated from stobealign. (Optional, default=bowtie2)
 
-  	--seq-id Y          Minimum sequence identity percentage Y. (Optional, default=97.0%)
-  	                    Filters alignments by requiring at least Y% identity.
+	--only-mapids       Output only the mapped pairs of read and contig identifiers. (Optional)
+						This flag restricts the output to just the IDs of reads and mapped contigs.
 
-  	-h, --help          Display this help message and exit.
+	--qcov X            Minimum query/read coverage threshold X. (Optional, default=99.0%)
+						Specifies the minimum percentage of query sequence that must be aligned.
+
+	--seq-id Y          Minimum sequence identity percentage Y. (Optional, default=97.0%)
+						Filters alignments by requiring at least Y% identity.
+
+	-h, --help          Display this help message and exit.
 
 # Example
 One go mapping and processing,
