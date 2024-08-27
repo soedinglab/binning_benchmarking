@@ -488,7 +488,7 @@ void process_alignment_line(
 
         } catch (const std::exception& e) {
             std::cerr << "Error: Input sam file should be in bowtie2 format\n";
-            std::cerr << "This tool support bowtie2 (default), bwa mem or strobealign format only!\n";
+            std::cerr << "This tool supports bowtie2 (default), bwa mem or strobealign format only!\n";
             std::cerr << "Use --strobealign flag if alignment was generated using strobealign\n";
             exit(1);
         }
@@ -606,7 +606,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "                      This flag disables the output of contig coverage.\n\n";
         std::cerr << "  --single            Process input as single-end reads. (Optional)\n";
         std::cerr << "                      By default, paired-end reads are expected unless this flag is set.\n\n";
-        std::cerr << "  --strobealign       Alignment is generated from stobealign. (Optional, default=bowtie2)\n\n";
+        std::cerr << "  --strobealign       Alignment is generated from stobealign with `--eqx` flag. (Optional, default=bowtie2)\n\n";
         std::cerr << "  --only-mapids       Output only the mapped pairs of read and contig identifiers. (Optional)\n";
         std::cerr << "                      This flag restricts the output to just the IDs of reads and mapped contigs.\n\n";
         std::cerr << "  --qcov X            Minimum query/read coverage threshold X. (Optional, default=99.0%)\n";

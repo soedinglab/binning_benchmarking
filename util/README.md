@@ -30,7 +30,7 @@ Require gcc version `>=9.4.0`
 	--single            Process input as single-end reads. (Optional)
 			    By default, paired-end reads are expected unless this flag is set.
 
-	--strobealign       Alignment is generated from stobealign. (Optional, default=bowtie2)
+	--strobealign       Alignment is generated from stobealign with `--eqx` flag. (Optional, default=bowtie2)
 
 	--only-mapids       Output only the mapped pairs of read and contig identifiers. (Optional)
 			    This flag restricts the output to just the IDs of reads and mapped contigs.
