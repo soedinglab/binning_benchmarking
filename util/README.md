@@ -22,24 +22,24 @@ Require gcc version `>=9.4.0`
 	<outputname>        Base name for the output files (without extensions).
 
 	--minlength N       Minimum length of contigs to be considered. (Default: N=1000)
-						Alignments for contigs shorter than this length will be ignored.
+				Alignments for contigs shorter than this length will be ignored.
 
 	--no-coverage       Do not output coverage. (Optional)
-						This flag disables the output of contig coverage.
+				This flag disables the output of contig coverage.
 
 	--single            Process input as single-end reads. (Optional)
-						By default, paired-end reads are expected unless this flag is set.
+				By default, paired-end reads are expected unless this flag is set.
 
 	--strobealign       Alignment is generated from stobealign. (Optional, default=bowtie2)
 
 	--only-mapids       Output only the mapped pairs of read and contig identifiers. (Optional)
-						This flag restricts the output to just the IDs of reads and mapped contigs.
+				This flag restricts the output to just the IDs of reads and mapped contigs.
 
 	--qcov X            Minimum query/read coverage threshold X. (Optional, default=99.0%)
-						Specifies the minimum percentage of query sequence that must be aligned.
+				Specifies the minimum percentage of query sequence that must be aligned.
 
 	--seq-id Y          Minimum sequence identity percentage Y. (Optional, default=97.0%)
-						Filters alignments by requiring at least Y% identity.
+				Filters alignments by requiring at least Y% identity.
 
 	-h, --help          Display this help message and exit.
 

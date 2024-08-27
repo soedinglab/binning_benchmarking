@@ -459,18 +459,33 @@ void process_alignment_line(
         return; 
     }
 
-    iss >> field >> field >> field >> field >> qual_str >> field >> field;
+    iss >> field >> field >> field >> field >> qual_str; // >> field >> field;
     
     std::pair<float, float> alnstats;
     if (!strobealign) {
         try {
-            if (field.find("XS") != std::string::npos) {
-                // suboptimal alignment score is given;
-                iss >> field >> field >> field >> field >> field >> md_str;
-            } else {
-                iss >> field >> field >> field >> field >> md_str;
+            // *** old code ***
+            // if (field.find("XS") != std::string::npos) {
+            //     // suboptimal alignment score is given;
+            //     iss >> field >> field >> field >> field >> field >> md_str;
+            // } else {
+            //     iss >> field >> field >> field >> field >> md_str;
+            // }
+            // md_str = md_str.substr(5, md_str.length());
+            // *** old code ***
+
+            // This should work for both bowtie2 and bwa mem
+            while (iss >> field) {
+                if (field.find("MD:Z:") != std::string::npos) {
+                    md_str = field.substr(5, field.length());
+                    break;
+                }
             }
-            md_str = md_str.substr(5, md_str.length());
+            if (md_str.empty()) {
+                std::cerr << "MD field not found in the SAM alignment\n";
+                exit(1);
+            }
+
         } catch (const std::exception& e) {
             std::cerr << "Error: Input sam file should be in bowtie2 format\n";
             std::cerr << "This tool support bowtie2 (default) or strobealign format only!\n";
