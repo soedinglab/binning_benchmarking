@@ -488,7 +488,7 @@ void process_alignment_line(
 
         } catch (const std::exception& e) {
             std::cerr << "Error: Input sam file should be in bowtie2 format\n";
-            std::cerr << "This tool support bowtie2 (default) or strobealign format only!\n";
+            std::cerr << "This tool support bowtie2 (default), bwa mem or strobealign format only!\n";
             std::cerr << "Use --strobealign flag if alignment was generated using strobealign\n";
             exit(1);
         }
