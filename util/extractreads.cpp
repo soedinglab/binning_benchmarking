@@ -70,14 +70,15 @@ ContigBinPairs processfastafiles(std::string inputdir, std::string& format){
     std::vector<std::string> fastafiles = getfastalist(inputdir, format);
     for (const auto& filepath : fastafiles) {
         IDsList contig_ids = extractContigIDsFromFasta(filepath);
+        
         // Replace .fasta with .fastq
         std::string fastqfilename = filepath.substr(0, filepath.find_last_of('.')) + ".fastq";
 
         for (const auto& contig_id : contig_ids) {
             contigbinpairs[contig_id] = fastqfilename;
-            // std::cout << contig_id << " " << fastqfilename << '\n';
         }
     }
+
     return contigbinpairs;
 
 }
@@ -100,6 +101,7 @@ ReadBinPairs processMapFile(ContigBinPairs& contigbinpairs, const std::string& m
             if (pos != std::string::npos) {
                 contig_id = contig_id.substr(0, pos-1);
             }
+            // Note: the pair gets updated if a read is mapped to multiple contigs, only one pair is stored
             auto it = contigbinpairs.find(trim(contig_id));
             if (it != contigbinpairs.end()) {
                 readbinpairs[read_id] = it->second;
