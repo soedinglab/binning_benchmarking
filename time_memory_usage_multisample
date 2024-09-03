@@ -1,0 +1,244 @@
+Marine
+McDevol
+	User time (seconds): 114457.79
+	System time (seconds): 30041.09
+	Percent of CPU this job got: 786%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 5:06:03
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 46104820
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 277
+	Minor (reclaiming a frame) page faults: 5694402633
+	Voluntary context switches: 42938277
+	Involuntary context switches: 28249621
+	Swaps: 0
+	File system inputs: 182064592
+	File system outputs: 80214538
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+COMEBIN
+	User time (seconds): 675916.87
+	System time (seconds): 198618.56
+	Percent of CPU this job got: 544%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 44:34:48
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 51618196
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 40705800974
+	Voluntary context switches: 52304407
+	Involuntary context switches: 174964307
+	Swaps: 0
+	File system inputs: 4534380894
+	File system outputs: 342080177
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
+GenomeFace
+	User time (seconds): 2818.42
+	System time (seconds): 95.96
+	Percent of CPU this job got: 664%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 7:18.73
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 37517364
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 30721736
+	Voluntary context switches: 937116
+	Involuntary context switches: 180793
+	Swaps: 0
+	File system inputs: 12076039
+	File system outputs: 3343075
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
+VAMB
+	User time (seconds): 8213.24
+	System time (seconds): 959.58
+	Percent of CPU this job got: 217%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:10:25
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7362268
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 194
+	Minor (reclaiming a frame) page faults: 208837375
+	Voluntary context switches: 30130333
+	Involuntary context switches: 963890
+	Swaps: 0
+	File system inputs: 118823485
+	File system outputs: 3492097
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
+Strain_madness
+McDevol
+	User time (seconds): 85734.47
+	System time (seconds): 25167.37
+	Percent of CPU this job got: 788%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 3:54:30
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 44552728
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 113
+	Minor (reclaiming a frame) page faults: 5885780841
+	Voluntary context switches: 115197590
+	Involuntary context switches: 10219565
+	Swaps: 0
+	File system inputs: 819703111
+	File system outputs: 81413801
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
+GenomeFace
+	User time (seconds): 16639.66
+	System time (seconds): 2317.34
+	Percent of CPU this job got: 378%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:23:31
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 61422924
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1217534192
+	Voluntary context switches: 1017569
+	Involuntary context switches: 1108408
+	Swaps: 0
+	File system inputs: 15924440
+	File system outputs: 5123295
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
+VAMB
+	User time (seconds): 11407.07
+	System time (seconds): 1779.11
+	Percent of CPU this job got: 245%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:29:33
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7394868
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 98
+	Minor (reclaiming a frame) page faults: 288938534
+	Voluntary context switches: 44094476
+	Involuntary context switches: 1802730
+	Swaps: 0
+	File system inputs: 426769025
+	File system outputs: 4321318
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
+
+
+Plant_associated
+VAMB
+	User time (seconds): 7860.41
+	System time (seconds): 1477.73
+	Percent of CPU this job got: 259%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 59:54.15
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7262268
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 152034375
+	Voluntary context switches: 28241163
+	Involuntary context switches: 14703464
+	Swaps: 0
+	File system inputs: 203350464
+	File system outputs: 4285254
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
+COMEBIN
+	User time (seconds): 537435.10
+	System time (seconds): 145530.07
+	Percent of CPU this job got: 549%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 34:31:52
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 46664516
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 209
+	Minor (reclaiming a frame) page faults: 6887157015
+	Voluntary context switches: 44819410
+	Involuntary context switches: 89274196
+	Swaps: 0
+	File system inputs: 5227327028
+	File system outputs: 287180899
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
+GenomeFace
+	User time (seconds): 2658.96
+	System time (seconds): 191.28
+	Percent of CPU this job got: 616%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 7:42.63
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 30783500
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 80190313
+	Voluntary context switches: 773120
+	Involuntary context switches: 175196
+	Swaps: 0
+	File system inputs: 12846766
+	File system outputs: 5438546
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
