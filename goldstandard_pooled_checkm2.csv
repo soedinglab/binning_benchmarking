@@ -1,0 +1,13 @@
+Tools	Near-complete (90%-5%)	Medium quality (70%-10%)	Medium quality (50%-10%)	Higher	Medium	Dataset
+McDevol	223	275	284	52	9	Marine
+VAMB	277	336	350	59	14	Marine
+COMEBin	285	388	443	103	55	Marine
+GenomeFace	289	374	417	85	43	Marine
+McDevol	41	43	43	2	0	Strain-madness
+VAMB	32	34	36	2	2	Strain-madness
+COMEBin	46	68	74	22	6	Strain-madness
+GenomeFace	40	47	57	7	10	Strain-madness
+McDevol	45	50	52	5	2	Plant-associated
+VAMB	61	73	73	12	0	Plant-associated
+COMEBin	79	94	99	15	5	Plant-associated
+GenomeFace	79	94	100	15	6	Plant-associated
