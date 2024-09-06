@@ -1,0 +1,25 @@
+Tools	Near-complete (90%-5%)	Medium quality (70%-10%)	Medium quality (50%-10%)	Higher	Medium	Dataset
+McDevol	103	151	168	48	17	marine pooled
+VAMB	109	158	172	49	14	marine pooled
+COMEBin	105	170	197	65	27	marine pooled
+GenomeFace	108	168	199	60	31	marine pooled
+McDevol	201	347	394	146	47	marine multisplit
+VAMB	178	258	320	80	62	marine multisplit
+COMEBin	1	27	68	26	41	marine multisplit
+GenomeFace	264	445	573	181	128	marine multisplit
+McDevol	13	18	19	5	1	strain pooled
+VAMB	14	18	18	4	0	strain pooled
+COMEBin	12	16	18	4	2	strain pooled
+GenomeFace	13	19	20	6	1	strain pooled
+McDevol	311	494	575	183	81	strain multisplit
+VAMB	240	324	354	84	30	strain multisplit
+COMEBin	0	7	67	7	60	strain multisplit
+GenomeFace	308	512	560	204	48	strain multisplit
+McDevol	18	38	42	20	4	plant pooled
+VAMB	20	38	40	18	2	plant pooled
+COMEBin	23	49	54	26	5	plant pooled
+GenomeFace	17	41	55	24	14	plant pooled
+McDevol	152	300	345	148	45	plant multisplit
+VAMB	117	206	238	89	32	plant multisplit
+COMEBin	1	14	30	13	16	plant multisplit
+GenomeFace	177	322	369	145	47	plant multisplit
