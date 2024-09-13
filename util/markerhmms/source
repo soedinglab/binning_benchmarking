@@ -1,0 +1,3 @@
+marker hmm set
+CPR lineage: https://github.com/Ecogenomics/CheckM/blob/master/custom_marker_sets/cpr_43_markers.hmm
+SSU: /big/software/checkm_db/hmms_ssu

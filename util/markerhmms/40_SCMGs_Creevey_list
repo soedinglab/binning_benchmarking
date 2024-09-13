@@ -1,0 +1,42 @@
+0 111 COG0048 Ribosomal protein S12
+0 146 COG0052 Ribosomal protein S2
+0 115 COG0080 Ribosomal protein L11
+0 158 COG0085 DNA-directed RNA polymerase
+0 119 COG0087 Ribosomal protein L3
+0 111 COG0091 Ribosomal protein L22
+0 106 COG0092 Ribosomal protein S3
+0 108 COG0093 Ribosomal protein L14
+0 121 COG0094 Ribosomal protein L5
+0 119 COG0096 Ribosomal protein S8
+0 110 COG0097 Ribosomal protein L6P/L9E
+0 126 COG0100 Ribosomal protein S11
+0 123 COG0184 Ribosomal protein S15P/S13E
+0 114 COG0200 Ribosomal protein L15
+0 80 COG0201 Preprotein translocase subunit SecY
+0 9 COG0552 Signal recognition particle GTPase
+1 122 COG0088 Ribosomal protein L4
+1 124 COG0098 Ribosomal protein S5
+1 118 COG0099 Ribosomal protein S13
+1 114 COG0103 Ribosomal protein S9
+1 111 COG0185 Ribosomal protein S19
+1 116 COG0186 Ribosomal protein S17
+1 122 COG0197 Ribosomal protein L16/L10E
+1 147 COG0522 Ribosomal protein S4
+2 115 COG0081 Ribosomal protein L1
+2 111 COG0102 Ribosomal protein L13
+2 24 COG0172 Seryl-tRNA synthetase
+2 11 COG0215 Cysteinyl-tRNA synthetase
+2 111 COG0256 Ribosomal protein L18
+2 25 COG0495 Leucyl-tRNA synthetase
+2 19 COG0541 Signal recognition particle GTPase
+3 12 COG0016 Phenylalanyl-tRNA synthetase alpha subunit
+3 128 COG0049 Ribosomal protein S7
+3 129 COG0090 Ribosomal protein L2
+3 153 COG0202 DNA-directed RNA polymerase
+3 8 COG0533 Metal-dependent protease
+4 31 COG0525 Valyl-tRNA synthetase
+6 22 COG0012 GTP Binding Protein
+10 17 COG0018 Arginyl-tRNA synthetase
+11 42 COG0124 Histidyl-tRNA synthetase
+
+genomeface SCMGs one additional gene (COG0086, RpoC, DNA-directed RNA polymerase, beta' subunit/160kD subunit)
