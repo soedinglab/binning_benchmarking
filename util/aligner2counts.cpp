@@ -592,6 +592,7 @@ int main(int argc, char *argv[]) {
         {"strobealign", no_argument, 0, 'r'},
         {"qcov", required_argument, 0, 'q'},
         {"seq-id", required_argument, 0, 's'},
+        {"minlength", required_argument, 0, 'l'},
         {0, 0, 0, 0}
     };
     
@@ -623,7 +624,7 @@ int main(int argc, char *argv[]) {
     // Parse optional arguments
     int option_index = 0;
     int opt;
-    while ((opt = getopt_long(argc, argv, "cpmrq:s:", long_options, &option_index)) != -1) {
+    while ((opt = getopt_long(argc, argv, "cpmrq:s:l:", long_options, &option_index)) != -1) {
         switch (opt) {
             case 'c':
                 coverage = false;
@@ -642,6 +643,9 @@ int main(int argc, char *argv[]) {
                 break;
             case 's':
                 seq_id = std::stof(optarg);
+                break;
+            case 'l':
+                minlength = std::stoi(optarg);
                 break;
             case '?':
                 // getopt_long prints an error message automatically
