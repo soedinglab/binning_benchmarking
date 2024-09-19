@@ -263,13 +263,13 @@ std::pair<float, float> get_seqid_alncov_strobealign(const std::string& cigar_st
     float seq_id, alignment_coverage;
 
     if (!(matches + mismatches > 0)) {
-        std::cerr << "Zero matches and mismatches. Something wrong with the alignment\n";
-        exit(1);
+        std::cout << "Zero matches and mismatches. Something wrong with the alignment, skipping it!\n";
+        return std::make_pair(0.0, 0.0);
     }
 
     if (qual_str.empty()) {
-        std::cerr << "Zero quality string length. Something wrong with the alignment\n";
-        exit(1);
+        std::cout << "Zero quality string length. Something wrong with the alignment, skipping it!\n";
+        return std::make_pair(0.0, 0.0);
     }
 
     seq_id = (static_cast<float>(matches) * 100) / (matches + mismatches);
@@ -460,7 +460,7 @@ void process_alignment_line(
     }
 
     iss >> field >> field >> field >> field >> qual_str; // >> field >> field;
-    
+
     std::pair<float, float> alnstats;
     if (!strobealign) {
         try {
