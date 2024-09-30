@@ -56,5 +56,5 @@ If you have `.sam` file, you can also use `cat <input>.sam | aligner2counts <out
 
 
 
-# Mapping OTU ids to real contigs based on the highest fraction of OTU reads mapped
+# Mapping OTU IDs to assembled contigs based on the highest fraction of reads mapped from OTUs to contigs
 `python gsmapping --readmapping read_otuid.tsv --contigmapping read_contig_mapped.tsv --length contig_length.tsv --outdir output_dir`
