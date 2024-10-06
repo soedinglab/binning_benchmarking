@@ -186,12 +186,12 @@ std::pair<float, float> get_seqid_alncov(std::pair<int, int> &alnpos, std::strin
     }
     float seq_id, alignment_coverage;
 
-    if (! (matches+mismatches) > 0) {
+    if (!((matches+mismatches) > 0)) {
         std::cerr << "Zero matches and mismatched position. Something wrong with the alignment\n";
         exit(1);
     }
 
-    if (!qual_str.length() > 0) {
+    if (!(qual_str.length() > 0)) {
         std::cerr << "Zero quality string length. Something wrong with the alignment \n";
         exit(1);
     }

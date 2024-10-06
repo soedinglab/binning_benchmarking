@@ -50,13 +50,13 @@ Refer to benchmarking_scripts.ipynb
 
 For combined read fastq and mapfile
 
-`extractreads <fullpath/binfastafolder> <allsample_mapfile> <all_reads.corr.fq>`
+`extractreads <fullpath/binfastafolder> <allsample_mapfile> <all_reads.corr.reads.fq>`
 
 For sample-wise processing, end extracted fastq file will have reads from all samples
 
     for sample in samplelist;
     do
-        extractreads fullpath/binfastafolder ${sample}_mapfile ${sample}_reads.corr.fq; 
+        extractreads fullpath/binfastafolder ${sample}_mapfile ${sample}.fastq;
     done
 
 ## Plotting
