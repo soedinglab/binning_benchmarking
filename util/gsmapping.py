@@ -117,7 +117,7 @@ if __name__ == "__main__":
         prog="gsmapping",
         description="get contigs to otu pairs",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        usage="%(prog)s --readmapping --contigmapping --outdir",
+        usage="%(prog)s --readmapping --contigmapping --length --outdir",
         add_help=True,
     )
 
