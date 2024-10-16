@@ -21,23 +21,33 @@ Reads are corrected by CoCo (https://github.com/soedinglab/CoCo). The correction
 `splitreadsbysample <sampleid_file> <fastq_file> <outdir>` (output: <sample_id>.fastq)
 
 ## Assemble reads
+Requires MEGAHIT installed (https://github.com/voutcn/megahit.git)
 ### pooled assembly
 `megahit --12 *_reads.fastq -t 64 --presets meta-sensitive -o megahit_out`
 
 ### sample-wise assembly
 
 `megahit --12 <sample_id>_reads.fastq -t 64 --presets meta-sensitive -o <sample_id>_megahit_out`
+
 `cat *_megahit_out/final.contigs.fa > allcontigs_concatenatedallsamples.fa`  (concatenate all sample assemblies into one master contig file)
 
 ## Prepare abundance file from aligner output
+Strobealign is the fast and accurate aligner and we used to obtain abundance matrix. (https://github.com/ksahlin/strobealign.git)
 `mkdir samfiles`
 ### pooled assembly
 `strobealign -t 64 --aemb megahit_out/final.contigs.fa --eqx --interleaved <sample_id>.fastq > samfiles/abundances_<sample_id>.tsv`
+
 `strobealign -t 64 megahit_out/final.contigs.fa --eqx --interleaved <sample_id>.fastq | samtools view -h -o samfiles/<sample_id>_strobealign.sam`
 
 ### concatenated sample-wise assembly
 `strobealign -t 64 --aemb allcontigs_concatenatedallsamples.fa --eqx --interleaved ${sample_id}.fastq > samfiles/abundances_<sample_id>.tsv`
+
 `strobealign -t 64 allcontigs_concatenatedallsamples.fa --eqx --interleaved ${sample_id}.fastq |samtools view -h -o samfiles/<sample_id>_strobealign.sam`
+
+If you have used other aligners (eg. Bowtie2, bwa-mem), use our in-house script
+
+`samtools view samfiles/<sample_id>_strobealign.sam | aligner2counts samfiles <sample_id> --only-mapids`
+
 
 ## Binning
 Refer to benchmarking_scripts.ipynb
@@ -58,6 +68,18 @@ For sample-wise processing, end extracted fastq file will have reads from all sa
     do
         extractreads fullpath/binfastafolder ${sample}_mapfile ${sample}.fastq;
     done
+## Assessment
+### CheckM2
+CheckM2 is a neural network-based method that estimates bin completeness and purity reliably. (https://github.com/chklovski/CheckM2.git)
+`checkm2 predict --input <binning_tool>_results -o <binning_tool>_results/checkm2_result --thread 24 -x fasta`
+
+### AMBER
+For the binning of contigs from gold-standard sets, we used AMBER assessment tool. (https://github.com/CAMI-challenge/AMBER.git)
+`amber.py <binning_tool>_cluster.tsv -g gsa_pooled_mapping_short.binning -o amber_results` where gsa_pooled\_mapping\_short.binning files for marine, strain-madness and plant-associated datasets are provided from CAMI2 assessment study.
+
+### Checkm
+Checkm is used to validate MetaBAT2 and MetaWRAP bin_refinement results. (https://github.com/Ecogenomics/CheckM.git)
+`checkm lineage_wf bin_folder/ output_folder/ -x fasta -t 24`
 
 ## Plotting
 Refer to plots.ipynb
