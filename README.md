@@ -71,7 +71,7 @@ For sample-wise processing, end extracted fastq file will have reads from all sa
 ## Assessment
 ### CheckM2
 CheckM2 is a neural network-based method that estimates bin completeness and purity reliably. (https://github.com/chklovski/CheckM2.git) \
-`checkm2 predict --input <binning_tool>_results -o <binning_tool>_results/checkm2_result --thread 24 -x fasta`
+`checkm2 predict --input <binning_tool>_results -o <binning_tool>_results/checkm2_results --thread 24 -x fasta`
 
 ### AMBER
 For the binning of contigs from gold-standard sets, we used AMBER assessment tool. (https://github.com/CAMI-challenge/AMBER.git) \
@@ -79,7 +79,7 @@ For the binning of contigs from gold-standard sets, we used AMBER assessment too
 
 ### Checkm
 Checkm is used to validate MetaBAT2 and MetaWRAP bin_refinement results. (https://github.com/Ecogenomics/CheckM.git) \
-`checkm lineage_wf bin_folder/ output_folder/ -x fasta -t 24`
+`checkm lineage_wf <binning_tool>_results <binning_tool>_results/checkm_results -x fasta -t 24`
 
 ## Plotting
 Refer to plots.ipynb
