@@ -1,0 +1,5 @@
+
+paths:
+  # COCOPATH: "/home/users/yazhini.a01/software/CoCo/build"
+  STROBEALIGNPATH: "/home/yazhini/software/strobealign/build"
+  UTILPATH: "/home/yazhini/work/binning_benchmarking/util"
