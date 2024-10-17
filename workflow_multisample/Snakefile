@@ -1,0 +1,246 @@
+configfile: 'config.yaml'
+
+# Access command line paramters
+dataset = config['dataset']
+mode = config['mode']
+minlength = config['minlength']
+utilpath = config['paths']['UTILPATH']
+nthread = max(int(config['threads']), 8)
+readpath = config['readpath']
+outputpath = config['outputpath']
+
+READ_PATH = readpath
+ASSEMBLY_PATH = f"{outputpath}/{dataset}/megahit_assembly/{mode}"
+ALIGNMENT_PATH = f"{outputpath}/{dataset}/megahit_assembly/{mode}/samfiles"
+SAMPLE_IDS = glob_wildcards(f"{READ_PATH}/{{id,[^/]+}}.fastq").id
+
+rule all:
+    input:
+        expand(f"{ASSEMBLY_PATH}/{{id}}/megahit_out/", id=SAMPLE_IDS),
+        expand(f"{ALIGNMENT_PATH}/abundances_{{id}}.tsv", id=SAMPLE_IDS),
+        expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign.sam", id=SAMPLE_IDS),
+        f"{ASSEMBLY_PATH}/concatenated_final.contigs.fa",
+        f"{ASSEMBLY_PATH}/single_concatenated_final.contigs.fa",
+        f"{ASSEMBLY_PATH}/contig_length",
+        f"{ASSEMBLY_PATH}/sorted_multisample_contigs.fa",
+        f"{ALIGNMENT_PATH}/abundances_gf.tsv",
+        expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam", id=SAMPLE_IDS),
+        f"{ASSEMBLY_PATH}/metabat2_results",
+        f"{ASSEMBLY_PATH}/mcdevol_results",
+        # f"{ASSEMBLY_PATH}/genomeface_results",
+        # f"{ASSEMBLY_PATH}/vamb_results",
+        # f"{ASSEMBLY_PATH}/comebin_results",
+        # f"{ASSEMBLY_PATH}/checkm2_results"
+
+rule assembly:
+    input:
+        reads=expand(f"{READ_PATH}/{{id}}.fastq", id=SAMPLE_IDS)
+    output:
+        assemblypath = directory(f"{ASSEMBLY_PATH}/{{id}}/megahit_out/")
+    threads: nthread
+    run:
+        comma_separated_reads = ",".join(input.reads)
+        shell(f"""
+            singularity run docker://vout/megahit --out-dir {output.assemblypath} \
+                --12 {comma_separated_reads} \
+                --presets meta-sensitive -t {threads}
+            """)
+
+rule concat_assemblies:
+    input:
+        assembly_files = expand(f"{ASSEMBLY_PATH}/{{id}}/megahit_out/final.contigs.fa", id=SAMPLE_IDS)
+    output:
+        concatenated_assembly = f"{ASSEMBLY_PATH}/concatenated_final.contigs.fa"
+    shell:
+        """
+        for id in {SAMPLE_IDS}; do
+            sed 's/^>/>S'$id'C/' {ASSEMBLY_PATH}/$id/megahit_out/final.contigs.fa >> {output.concatenated_assembly}
+        done
+        """
+
+rule read_contig_alignment:
+    input:
+        sample_reads=f"{READ_PATH}/{{id}}.fastq",
+        assembly=f"{ASSEMBLY_PATH}/concatenated_final.contigs.fa"
+    output:
+        abundfile=f"{ALIGNMENT_PATH}/abundances_{{id}}.tsv",
+        samfile=f"{ALIGNMENT_PATH}/{{id}}_strobealign.sam"
+    params:
+        strobealignpath = config['paths']['STROBEALIGNPATH'],
+    threads: nthread
+    shell:
+        """
+        {params.strobealignpath}/strobealign -t {threads} \
+            --aemb {input.assembly} --eqx \
+            --interleaved {input.sample_reads} \
+            > {output.abundfile}
+        {params.strobealignpath}/strobealign \
+            -t {threads} {input.assembly} --eqx \
+            --interleaved {input.sample_reads} | \
+            singularity exec \
+            docker://biocontainers/samtools:v1.9-4-deb_cv1 \
+            samtools view -h -o {output.samfile}
+        """
+
+abundfile = f"{ALIGNMENT_PATH}/abundances_gf.tsv"
+contigseq = f"{ASSEMBLY_PATH}/sorted_multisample_contigs.fa"
+rule abundance_matrix:
+    output:
+        outfile = f"{ASSEMBLY_PATH}/single_concatenated_final.contigs.fa",
+        length = f"{ASSEMBLY_PATH}/contig_length",
+        abund=abundfile,
+        contigseq=contigseq
+    run:
+        assemblypath = directory(f"{ASSEMBLY_PATH}")
+        assemblyseq = f"{ASSEMBLY_PATH}/concatenated_final.contigs.fa"
+        shell(f"""
+            {utilpath}/convertfasta_multi2single {assemblyseq} {assemblypath} --length
+            """)
+        touch(output.outfile)
+        touch(output.length)
+    
+        version = shell("python --version", quiet=True)
+        shell("which python", quiet=True)
+        shell(f"""
+            sed "N;s/\\n/\\t/g" {output.outfile} | sort -V -k1 | \
+            awk -F'\t' 'length($2) >= {minlength}' | \
+            sed "s/\\t/\\n/g" > {output.contigseq}
+            """)
+        shell("python {utilpath}/get_abundance_tsv.py \
+            -i {ALIGNMENT_PATH} -l {output.length} -m {minlength}")
+
+rule metabat2_run:
+    input:
+        abund=abundfile,
+        contigseq=contigseq
+    output:
+        outputdir = directory(f"{ASSEMBLY_PATH}/metabat2_results")
+    threads: nthread
+    conda:
+        "environments/metabat2_try.yml"
+    shell:
+        """
+        outputfile="{output.outputdir}/metabat2_results"
+        filteredpath={output.outputdir}/filtered_bins
+        metabat2 -i {input.contigseq} \
+            -a {input.abund} -o $outputfile -t {threads} -m 1500
+        source activate mcdevol_env
+        python {utilpath}/splitfasta_bysampleids.py --input_dir {output.outputdir} --output_dir {output.outputdir}/samplewisebins --format fa
+        # rm {output.outputdir}/samplewisebins
+        """
+
+def filterseq(inputdir, outputdir):
+        
+
+rule filterbins:
+    input:
+
+    output:
+
+    conda:
+        "mcdevol_env"
+    shell:
+        """
+        python {utilpath}/filterbins.py --indir {output.outputdir}/samplewisebins --outdir $filteredpath --format fa
+        """
+
+rule mcdevol_run:
+    input:
+        abund=abundfile,
+        contigseq=contigseq
+    output:
+        outputdir = directory(f"{ASSEMBLY_PATH}/mcdevol_results")
+    threads: nthread
+    conda:
+        "mcdevol_env"
+    shell:
+        """
+        python detect_gpu.py
+        /home/yazhini/work/binning_tool/mcdevol/mcdevol.py \
+            -c {input.contigseq} -o {output.outputdir} \
+            -a {input.abund} --abundformat metabat -n {threads} -l 500 --multi_split
+        python {utilpath}/filterbins.py --indir {output.outputdir}/cluster_split_bins --outdir {output.outputdir}/cluster_split_bins_filtered --format fa
+        """
+
+# # Rule to create the output directory
+# rule create_sortedbams_dir:
+#     output:
+#         directory(f"{ALIGNMENT_PATH}/sortedbams")
+#     shell:
+#         "mkdir -p {output}"
+
+# rule metawrap_run:
+rule sortedbams:
+    input:
+        samfile=f"{ALIGNMENT_PATH}/{{id}}_strobealign.sam"
+    output:
+        bamfile=f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam"
+    threads: nthread
+    shell:
+        """
+        singularity exec \
+            docker://biocontainers/samtools:v1.9-4-deb_cv1 \
+            samtools sort -@{threads} {input.samfile} -o {output.bamfile}
+        """
+
+rule marker_annotation:
+    input:
+        contigseq=contigseq
+    output:
+        markerhits=f"{ASSEMBLY_PATH}/marker_hits"
+    conda:
+        "genomeface_env"
+    shell:
+        """
+        python {utilpath}/pyrodigal_prediction.py --seq {input.contigseq} --outdir {ASSEMBLY_PATH}
+        """
+
+rule genomeface_run:
+    input:
+        abund=abundfile,
+        contigseq=contigseq,
+        markerhits=f"{ASSEMBLY_PATH}/marker_hits"
+    output:
+        outputdir = directory(f"{ASSEMBLY_PATH}/genomeface_results")
+    conda:
+        "genomeface_env"
+    threads: nthread
+    shell:
+        """
+        python detect_gpu_tf.py
+        genomeface -i {input.contigseq} -o {output.outputdir} \
+            -a {input.abund} -g {input.markerhits} -m {minlength} -s
+        """
+
+rule vamb_run:
+    input:
+        contigseq = f"{ASSEMBLY_PATH}/concatenated_final.contigs.fa"
+    output:
+        outputdir = directory(f"{ASSEMBLY_PATH}/vamb_results")
+    threads: nthread
+    conda:
+        "vamb_env"
+    shell:
+        """
+        python detect_gpu.py
+        vamb --outdir {output.outputdir} \
+            --fasta  {input.contigseq} \
+            --bamfiles {ALIGNMENT_PATH}/*.bam -m {minlength} \
+            --minfasta 200000 --cuda -p {threads} -o 'C'
+        """
+
+# rule comebin_run:
+#     input:
+#         contigseq= contigseq
+#     output:
+#         outputdir=directory(f"{ASSEMBLY_PATH}/comebin_results")
+#     threads: nthread
+#     conda:
+#         "comebin_env"
+#     shell:
+#         """
+#         python detect_gpu.py
+#         run_comebin.sh \
+#             -a {input.contigseq} -p {ALIGNMENT_PATH} -o {output.outputdir} -t {threads}
+#         """
+
