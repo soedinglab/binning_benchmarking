@@ -113,7 +113,7 @@ rule metabat2_run:
         outputdir = directory(f"{ASSEMBLY_PATH}/metabat2_results")
     threads: nthread
     conda:
-        "environments/metabat2_try.yml"
+        "environments/metabat2_env.yml"
     shell:
         """
         outputfile="{output.outputdir}/metabat2_results"
