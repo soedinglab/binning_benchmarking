@@ -1,0 +1,11 @@
+name: comebin_env
+channels:
+  - conda-forge
+  - bioconda
+  - pytorch
+  - nvidia
+  - defaults
+dependencies:
+  - comebin
+  - pytorch
+  - pytorch-cuda=11.8

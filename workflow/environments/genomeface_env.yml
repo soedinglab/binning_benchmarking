@@ -1,0 +1,17 @@
+name: genomeface_env
+channels:
+  - https://portal.nersc.gov/project/m1982/genomeface_repo
+  - nvidia
+  - rapidsai
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - genomeface
+  - cuda-version=11.7
+  - cuda-cudart=11.8
+  - cuda-nvrtc=11.8
+  - cuda-python=11.8
+  - cudatoolkit=11.7
+  - cudf=22.12
+  - cudnn=8.9
