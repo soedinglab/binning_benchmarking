@@ -8,3 +8,10 @@ Create a snakemake environment (preferrably using conda, https://anaconda.org/bi
         - MetaBAT2 (v2.17, https://anaconda.org/bioconda/metabat2) \
         - CheckM2 (v1.0.3, https://github.com/chklovski/CheckM2.git) \
 in your system as instructed in their respective github repositories or use `.yml` files in `environments` folder for the conda environments used in this study. For McDevol, set the mcdevol download path in `config.yaml`.
+
+
+To run pooled assembly binning pipeline, use the command below
+`snakemake --config dataset=<datasetname> mode=pooled threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda`
+
+To run multisample assembly binning pipeline, navigate to workflow_multisample use the command below
+`snakemake --config dataset=<datasetname> mode=multisample threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda`
