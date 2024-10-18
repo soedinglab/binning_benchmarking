@@ -14,13 +14,12 @@ Install these tools as instructed in their respective GitHub repositories or use
 #### To Run the Pooled Assembly Binning Pipeline
 Use the command below:
 
-\`\`\`bash
+```
 snakemake --config dataset=<datasetname> mode=pooled threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
-\`\`\`
-
+```
 #### To Run the Multisample Assembly Binning Pipeline
 Navigate to \`workflow_multisample\` and use the command below:
 
-\`\`\`bash
+```
 snakemake --config dataset=<datasetname> mode=multisample threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
-\`\`\`
+```
