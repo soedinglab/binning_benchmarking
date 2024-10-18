@@ -13,11 +13,6 @@ READ_PATH = readpath
 ASSEMBLY_PATH = f"{outputpath}/{dataset}/megahit_assembly/{mode}"
 ALIGNMENT_PATH = f"{outputpath}/{dataset}/megahit_assembly/{mode}/samfiles"
 SAMPLE_IDS = glob_wildcards(f"{READ_PATH}/{{id,[^/]+}}.fastq").id
-# # Define paths based on the parameters
-# READ_PATH = f"/home/yazhini/work/binning_benchmarking/workflow/data/{dataset}/fastqfiles"
-# ASSEMBLY_PATH = f"/home/yazhini/work/binning_benchmarking/workflow/data/{dataset}/megahit_assembly/{mode}"
-# ALIGNMENT_PATH = f"/home/yazhini/work/binning_benchmarking/workflow/data/{dataset}/megahit_assembly/{mode}/samfiles"
-# SAMPLE_IDS = glob_wildcards(f"{READ_PATH}/{{id,[^/]+}}.fastq").id
 
 rule all:
     input:
@@ -49,7 +44,7 @@ rule assembly:
                 --12 {comma_separated_reads} \
                 --presets meta-sensitive -t {threads}
             """)
-            # singularity --nv option for gpu run
+
 rule read_contig_alignment:
     input:
         sample_reads=f"{READ_PATH}/{{id}}.fastq",
@@ -138,7 +133,6 @@ rule mcdevol_run:
             -a {input.abund} --abundformat metabat -n {threads} -l 500
         """
 
-# rule metawrap_run:
 rule sortedbams:
     input:
         samfile=f"{ALIGNMENT_PATH}/{{id}}_strobealign.sam"
