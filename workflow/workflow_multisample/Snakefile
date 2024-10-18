@@ -5,6 +5,7 @@ dataset = config['dataset']
 mode = config['mode']
 minlength = config['minlength']
 utilpath = config['paths']['UTILPATH']
+environmentpath = config['paths']['ENVIRONMENTPATH']
 mcdevolpath = config['paths']['MCDEVOLPATH']
 nthread = max(int(config['threads']), 8)
 readpath = config['readpath']
@@ -16,22 +17,19 @@ SAMPLE_IDS = glob_wildcards(f"{READ_PATH}/{{id,[^/]+}}.fastq").id
 
 rule all:
     input:
-    #     expand(f"{ASSEMBLY_PATH}/{{id}}/megahit_out/", id=SAMPLE_IDS),
-    #     expand(f"{ALIGNMENT_PATH}/abundances_{{id}}.tsv", id=SAMPLE_IDS),
-    #     expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign.sam", id=SAMPLE_IDS),
-        # f"{ASSEMBLY_PATH}/concatenated_final.contigs.fa",
-        # f"{ASSEMBLY_PATH}/single_concatenated_final.contigs.fa",
-        # f"{ASSEMBLY_PATH}/contig_length",
-        # f"{ASSEMBLY_PATH}/sorted_multisample_contigs.fa",
-        # f"{ALIGNMENT_PATH}/abundances_gf.tsv",
-        # expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam", id=SAMPLE_IDS),
-        # f"{ASSEMBLY_PATH}/metabat2_results",
+        expand(f"{ASSEMBLY_PATH}/{{id}}/megahit_out/", id=SAMPLE_IDS),
+        expand(f"{ALIGNMENT_PATH}/abundances_{{id}}.tsv", id=SAMPLE_IDS),
+        expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign.sam", id=SAMPLE_IDS),
+        f"{ASSEMBLY_PATH}/concatenated_final.contigs.fa",
+        f"{ASSEMBLY_PATH}/single_concatenated_final.contigs.fa",
+        f"{ASSEMBLY_PATH}/contig_length",
+        f"{ASSEMBLY_PATH}/sorted_multisample_contigs.fa",
+        f"{ALIGNMENT_PATH}/abundances_gf.tsv",
+        expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam", id=SAMPLE_IDS),
         f"{ASSEMBLY_PATH}/metabat2_filteredbins",
         f"{ASSEMBLY_PATH}/mcdevol_results",
-        # f"{ASSEMBLY_PATH}/genomeface_results",
-        # f"{ASSEMBLY_PATH}/vamb_results",
-        # f"{ASSEMBLY_PATH}/comebin_results",
-        # f"{ASSEMBLY_PATH}/checkm2_results"
+        f"{ASSEMBLY_PATH}/genomeface_results",
+        f"{ASSEMBLY_PATH}/vamb_results"
 
 rule assembly:
     input:
@@ -118,7 +116,7 @@ rule metabat2_run:
         outputdir = directory(f"{ASSEMBLY_PATH}/metabat2_results")
     threads: nthread
     conda:
-        "environments/metabat2_env.yml"
+        "{environmentpath}/metabat2_env.yml"
     shell:
         """
         outputfile="{output.outputdir}/metabat2_results"
@@ -136,7 +134,7 @@ rule metabat2_postprocess:
     shell:
         """
         python {utilpath}/splitfasta_bysampleids.py --input_dir {input.metabat2_results} --output_dir {input.metabat2_results}/samplewisebins --format fa
-        python {utilpath}/filterbins.py --indir {input.metabat2_results}/samplewisebins --outdir {output.filteredbins} --format fasta --binsize 100
+        python {utilpath}/filterbins.py --indir {input.metabat2_results}/samplewisebins --outdir {output.filteredbins} --format fasta
         rm -rf {input.metabat2_results}/samplewisebins
         """
 
@@ -155,7 +153,7 @@ rule mcdevol_run:
         python {mcdevolpath}/mcdevol.py \
             -c {input.contigseq} -o {output.outputdir} \
             -a {input.abund} --abundformat metabat -n {threads} -l 500 --multi_split
-        python {utilpath}/filterbins.py --indir {output.outputdir}/cluster_split_bins --outdir {output.outputdir}/cluster_split_bins_filtered --format fa
+        python {utilpath}/filterbins.py --indir {output.outputdir}/cluster_split_bins --outdir {output.outputdir}/cluster_split_bins_filtered
         """
 
 rule sortedbams:

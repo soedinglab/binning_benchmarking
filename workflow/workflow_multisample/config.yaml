@@ -2,4 +2,5 @@
 paths:
   STROBEALIGNPATH: "/home/yazhini/software/strobealign/build"
   UTILPATH: "/home/yazhini/work/binning_benchmarking/util"
-  MCDEVOLPATH: "/home/yazhini/work/binning_tool/mcdevol/"
+  ENVIRONMENTPATH: "/home/yazhini/work/binning_benchmarking/workflow/environments"
+  MCDEVOLPATH: "/home/yazhini/work/binning_tool/mcdevol"
