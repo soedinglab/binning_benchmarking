@@ -173,15 +173,15 @@ rule vamb_run:
         contigseq = f"{ASSEMBLY_PATH}/megahit_out/final.contigs.fa",
         sortedbam = expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam", id=SAMPLE_IDS)
     output:
-        outputdir = directory(f"{ASSEMBLY_PATH}/vamb_results"),
-        bindir = directory(f"{ASSEMBLY_PATH}/vamb_results/bins")
+        outputdir = directory(f"{ASSEMBLY_PATH}/vamb_results")
     threads: nthread
     conda:
         "vamb_env"
     shell:
         """
         python detect_gpu.py
-        vamb --outdir {output.outputdir} \
+        # rm -rf {ASSEMBLY_PATH}/vamb_results
+        vamb --outdir {ASSEMBLY_PATH}/vamb_results \
             --fasta  {input.contigseq} \
             --bamfiles {ALIGNMENT_PATH}/*.bam -m {minlength} \
             --minfasta 200000 --cuda -p {threads}
@@ -209,7 +209,7 @@ rule checkm2_run:
         metabat2_bins = f"{ASSEMBLY_PATH}/metabat2_results",
         mcdevol_bins = f"{ASSEMBLY_PATH}/mcdevol_results/bins",
         genomeface_bins = f"{ASSEMBLY_PATH}/genomeface_results",
-        vamb_bins = f"{ASSEMBLY_PATH}/vamb_results/bins",
+        vamb_bins = f"{ASSEMBLY_PATH}/vamb_results",
         comebin_bins = f"{ASSEMBLY_PATH}/comebin_results/comebin_res/comebin_res_bins"
     output:
         checkm2_results = directory(f"{ASSEMBLY_PATH}/checkm2_results")
@@ -221,6 +221,6 @@ rule checkm2_run:
         checkm2 predict -i {input.metabat2_bins} -o {output.checkm2_results}/metabat2 -x fa --thread {threads}
         checkm2 predict -i {input.mcdevol_bins} -o {output.checkm2_results}/mcdevol -x fasta --thread {threads}
         checkm2 predict -i {input.genomeface_bins} -o {output.checkm2_results}/genomeface -x fasta --thread {threads}
-        checkm2 predict -i {input.vamb_bins} -o {output.checkm2_results}/vamb -x fna --thread {threads}
+        checkm2 predict -i {input.vamb_bins}/bins -o {output.checkm2_results}/vamb -x fna --thread {threads}
         checkm2 predict -i {input.comebin_bins} -o {output.checkm2_results}/comebin -x fa --thread {threads}
         """
