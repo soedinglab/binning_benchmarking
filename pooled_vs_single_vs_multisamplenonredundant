@@ -1,0 +1,46 @@
+Tools (amber assessment)	Near-complete (90%-5%)	Higher quality (70%-10%)	Medium quality (50%-10%)	Higher	Medium	Dataset
+McDevol	87	115	121	28	6	marine pooled
+McDevol	16	27	32	11	5	marine single
+McDevol	61	72	72	11	0	marine multisample nr
+VAMB	105	139	148	34	9	marine pooled
+VAMB	22	28	29	6	1	marine single
+VAMB	63	73	78	10	5	marine multisample nr
+COMEBin	107	158	182	51	24	marine pooled
+COMEBin	36	55	64	19	9	marine single
+COMEBin	112	136	141	24	5	marine multisample nr
+GenomeFace	105	150	166	45	16	marine pooled
+GenomeFace	21	34	41	13	7	marine single
+GenomeFace	80	110	129	30	19	marine multisample nr
+MetaBAT2	100	142	161	42	19	marine pooled
+MetaBAT2	23	43	52	20	9	marine single
+MetaBAT2	29	44	65	15	21	marine multisample nr
+McDevol	10	13	14	3	1	strain pooled
+McDevol	3	5	5	2	0	strain single
+McDevol	14	15	16	1	1	strain multisample nr
+VAMB	12	13	13	1	0	strain pooled
+VAMB	0	0	0	0	0	strain single
+VAMB	13	14	16	1	2	strain multisample nr
+COMEBin	9	11	13	2	2	strain pooled
+COMEBin	5	6	7	1	1	strain single
+COMEBin	15	18	31	3	13	strain multisample nr
+GenomeFace	10	12	13	2	1	strain pooled
+GenomeFace	3	5	5	2	0	strain single
+GenomeFace	13	16	16	3	0	strain multisample nr
+MetaBAT2	9	12	13	3	1	strain pooled
+MetaBAT2	1	4	5	3	1	strain single
+MetaBAT2	7	11	13	4	2	strain multisample nr
+McDevol	25	34	34	9	0	plant pooled
+McDevol	7	11	12	4	1	plant single
+McDevol	23	32	36	9	4	plant multisample nr
+VAMB	31	46	49	15	3	plant pooled
+VAMB	7	13	13	6	0	plant single
+VAMB	24	32	34	8	2	plant multisample nr
+COMEBin	31	50	57	19	7	plant pooled
+COMEBin	9	18	23	9	5	plant single
+COMEBin	1	12	21	11	9	plant multisample nr
+GenomeFace	26	42	52	16	10	plant pooled
+GenomeFace	7	14	17	7	3	plant single
+GenomeFace	27	33	39	6	6	plant multisample nr
+MetaBAT2	24	42	47	18	5	plant pooled
+MetaBAT2	6	17	18	11	1	plant single
+MetaBAT2	13	21	25	8	4	plant multisample nr
