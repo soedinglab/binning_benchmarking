@@ -1,0 +1,22 @@
+Tools	Datasets	Memory (GB)	Time (minutes)
+McDevol	marine	17.2	70.8167
+VAMB	marine	1.8	23.4167
+VAMB (w/o data processing)	marine	1.8	19.1833
+COMEBin	marine	14.6	362.5
+COMEBin (w/o data processing)	marine	14.6	293.25
+GenomeFace	marine	17.6	2.6
+MetaBat2	marine	3.9	5.55
+McDevol	strain-madness	4.5	32.45
+VAMB	strain-madness	2.8	16.8833
+VAMB (w/o data processing)	strain-madness	2.8	3.3833
+COMEBin	strain-madness	4.4	86.55
+COMEBin (w/o data processing)	strain-madness	4.4	40.26
+GenomeFace	strain-madness	16	2.45
+MetaBat2	strain-madness	1.7	0.2
+McDevol	plant-associated	13.3	58.15
+VAMB	plant-associated	3.8	21.6
+VAMB (w/o data processing)	plant-associated	3.8	14.4
+COMEBin	plant-associated	13.7	284.6
+COMEBin (w/o data processing)	plant-associated	13.7	230.77
+GenomeFace	plant-associated	14.6	2.0833
+MetaBat2	plant-associated	2.1	1.5833
