@@ -1,6 +1,6 @@
 ### Snakemake Workflow for Benchmarking Binning Tools
 
-Create a Snakemake environment (preferably using conda, [https://anaconda.org/bioconda/snakemake](https://anaconda.org/bioconda/snakemake)) to run the Snakemake pipeline. To reproduce the results, install the binning tools and assessment tool used here, namely:
+Create a Snakemake environment (preferably using conda, [https://anaconda.org/bioconda/snakemake](https://anaconda.org/bioconda/snakemake)) to run the Snakemake pipeline. Singularity container platform should be preinstalled. To reproduce the results, install the binning tools and assessment tool used here, namely:
 
 - **McDevol** (v0.1.0, [git@github.com:soedinglab/McDevol.git](git@github.com:soedinglab/McDevol.git) *not yet public*)
 - **VAMB** (v4.1.3, [https://github.com/RasmussenLab/vamb.git](https://github.com/RasmussenLab/vamb.git))
@@ -9,7 +9,7 @@ Create a Snakemake environment (preferably using conda, [https://anaconda.org/bi
 - **MetaBAT2** (v2.17, [https://anaconda.org/bioconda/metabat2](https://anaconda.org/bioconda/metabat2))
 - **CheckM2** (v1.0.3, [https://github.com/chklovski/CheckM2.git](https://github.com/chklovski/CheckM2.git))
 
-Install these tools as instructed in their respective GitHub repositories or use the `.yml` files in the `environments` folder for the conda environments used in this study. For McDevol, set the McDevol download path in `config.yaml`.
+Install these tools with version specified here as instructed in their respective repositories (recommended). Otherwise, use the `.yml` files in the `environments` folder for the conda environments used in this study. For McDevol, set the McDevol download path in `config.yaml`.
 
 #### To Run the Pooled Assembly Binning Pipeline
 Use the command below:
@@ -22,4 +22,31 @@ Navigate to \`workflow_multisample\` and use the command below:
 
 ```
 snakemake --config dataset=<datasetname> mode=multisample threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
+```
+
+
+####  Configuration Paths for Workflow
+Set correct paths in your system before running the workflow.
+
+STROBEALIGNPATH: Specifies the path to Strobealign executable file used for sequence alignment. (eg. <parentpath>/strobealign/build)
+
+UTILPATH: Specifies the path to the utility directory and contains helper scripts for binning benchmarking tasks. It is located in download directory of binning_benchmarking. (eg. <downloadpath>/binning_benchmarking/util)
+
+ENVIRONMENT: Specifies environment path to find MetaBAT2 environment file (`.yml`), found at <downloadpath>/binning_benchmarking/workflow/environments.
+
+MCDEVOLPATH: Provides the location of the McDevol tool and is located at <mcdevoldownloadpath>/mcdevol.
+
+
+
+#### Reassembly bins from pooled assembly binning
+Reassembly is performed using contigs in the bin and reads mapped to those contigs from all samples using SPAdes assembler (https://github.com/ablab/spades/releases/tag/v4.0.0).
+
+
+
+#### Analysing results
+This study focused on couting number of near-complete (90% completeness and 5% contamination), higher quality (70% completeness and 10% contamination) and medium quality bins (50% completeness and 10% contamination) bins. Use the bash command below on CheckM2 output `quality_report.tsv`
+
+```
+awk '{if($2>=90&&$3<5) print $0}' quality_report.tsv | wc -l && awk '{if($2>=70&&$3<10) print $0}' quality_report.tsv | wc -l && awk '{if($2>=50&&$3<10) print $0}' quality_report.tsv | wc -l
+
 ```
