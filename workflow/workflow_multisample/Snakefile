@@ -20,7 +20,8 @@ rule all:
         f"{ASSEMBLY_PATH}/metabat2_filteredbins",
         f"{ASSEMBLY_PATH}/mcdevol_results",
         f"{ASSEMBLY_PATH}/genomeface_results",
-        f"{ASSEMBLY_PATH}/vamb_results"
+        f"{ASSEMBLY_PATH}/vamb_results",
+        f"{ASSEMBLY_PATH}/comebin_filteredbins"
 
 rule assembly:
     input:
@@ -119,12 +120,12 @@ rule metabat2_postprocess:
     output:
         filteredbins = directory(f"{ASSEMBLY_PATH}/metabat2_filteredbins")
     conda:
-        "mcdevol_env"  # Ensure that this environment has the necessary packages
+        "mcdevol_env"
     shell:
         """
         python {utilpath}/splitfasta_bysampleids.py --input_dir {input.metabat2_results} --output_dir {input.metabat2_results}/samplewisebins --format fa
         python {utilpath}/filterbins.py --indir {input.metabat2_results}/samplewisebins --outdir {output.filteredbins} --format fasta --binsize 10000
-        rm -rf {input.metabat2_results}/samplewisebins
+        # rm -rf {input.metabat2_results}/samplewisebins
         """
 
 rule mcdevol_run:
@@ -205,3 +206,32 @@ rule vamb_run:
             --minfasta 200000 --cuda -p {threads} -o 'C'
         """
 
+rule comebin_run:
+    input:
+        contigseq = contigseq,
+        sortedbam = expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam", id=SAMPLE_IDS)
+    output:
+        outputdir = directory(f"{ASSEMBLY_PATH}/comebin_results")
+    threads: nthread
+    conda:
+        "comebin_env"
+    shell:
+        """
+        python detect_gpu.py
+        run_comebin.sh \
+            -a {input.contigseq} -p {ALIGNMENT_PATH} -o {output.outputdir} -t {threads}
+        """
+rule comebin_postprocess:
+    input:
+        comebin_results = f"{ASSEMBLY_PATH}/comebin_results"
+    output:
+        filteredbins = directory(f"{ASSEMBLY_PATH}/comebin_filteredbins")
+    conda:
+        "mcdevol_env"
+    shell:
+        """
+        if [ -d {input.comebin_results}/samplewisebins ]; then rm -Rf {input.comebin_results}/samplewisebins; fi
+        python {utilpath}/splitfasta_bysampleids.py --input_dir {input.comebin_results}/comebin_res/comebin_res_bins --output_dir {input.comebin_results}/samplewisebins --format fa
+        python {utilpath}/filterbins.py --indir {input.comebin_results}/samplewisebins --outdir {output.filteredbins} --format fasta --binsize 10000
+        rm -rf {input.comebin_results}/samplewisebins
+        """
