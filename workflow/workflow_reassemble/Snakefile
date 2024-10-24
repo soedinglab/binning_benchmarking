@@ -1,0 +1,97 @@
+configfile: 'config.yaml'
+
+utilpath = config['paths']['UTILPATH']
+nthread = max(int(config['threads']), 8)
+READ_PATH = config['readpath']
+BIN_PATH = config['binpath']
+ALIGNMENT_PATH = config['sampath']
+FORMAT = config['binformat']
+SAMPLE_IDS = glob_wildcards(f"{READ_PATH}/{{id,[^/]+}}.fastq").id
+aligner = config.get('aligner', 'strobealign')
+
+
+BIN_IDS = glob_wildcards(f"{BIN_PATH}/{{id,[^/]+}}.{FORMAT}").id
+BIN_IDS = set(BIN_IDS)
+
+
+rule all:
+    input:
+        # expand(f"{ALIGNMENT_PATH}/{{id}}_mapids", id=SAMPLE_IDS),
+        # expand(f"{BIN_PATH}/{{id}}.fastq", id=BIN_IDS),
+        # expand(f"{BIN_PATH}/{{id}}_assembly", id=BIN_IDS),
+        f"{BIN_PATH}/scaffolds",
+        f"{BIN_PATH}/reassembly_checkm2_results"
+rule get_contigread_mapping:
+    input:
+        samfile=f"{ALIGNMENT_PATH}/{{id}}_strobealign.sam"
+    output:
+        mapfile=f"{ALIGNMENT_PATH}/{{id}}_mapids"
+    shell:
+        """
+        if [ "{aligner}" == "strobealign" ]; then
+            cat {input.samfile} | {utilpath}/aligner2counts {ALIGNMENT_PATH} {wildcards.id} --only-mapids --strobealign
+        else
+            cat {input.samfile} | {utilpath}/aligner2counts {ALIGNMENT_PATH} {wildcards.id} --only-mapids
+        fi
+        """
+
+rule extractreads:
+    input:
+        expand(f"{ALIGNMENT_PATH}/{{id}}_mapids", id=SAMPLE_IDS)
+    output:
+        expand(f"{BIN_PATH}/{{id}}.fastq", id=BIN_IDS)
+    shell:
+        """
+        for sample_id in {SAMPLE_IDS}; do
+            echo $sample_id
+            {utilpath}/extractreads {BIN_PATH} {ALIGNMENT_PATH}/${{sample_id}}_mapids {READ_PATH}/${{sample_id}}.fastq -f {FORMAT}
+        done
+        """
+
+rule reassemble:
+    input:
+        bin_reads = f"{BIN_PATH}/{{id}}.fastq",
+        bin_fasta = f"{BIN_PATH}/{{id}}.fasta"
+    output:
+        assembly=directory(f"{BIN_PATH}/{{id}}_assembly")
+    params:
+        spadespath = config['paths']['SPADESPATH'],
+    threads: nthread
+    shell:
+        """
+        set +e; # to run further even if spades run fails for a bin because bin is small and will anyway be exculded from final results with binsize selection
+        {params.spadespath}/spades.py --12 {input.bin_reads} \
+            --trusted-contigs {input.bin_fasta} \
+            --only-assembler --careful -o {output.assembly} \
+            -t {threads} -m 128 || echo "Spades failed for {wildcards.id}"
+        """
+
+rule select_scaffolds:
+    input:
+        expand(f"{BIN_PATH}/{{id}}_assembly", id=BIN_IDS)
+    output:
+        directory(f"{BIN_PATH}/scaffolds")
+    shell:
+        """
+        # set +e; # skip assembly folder that does not have scaffolds
+        for id in {BIN_IDS}; do
+            if [ -f {BIN_PATH}/${{id}}_assembly/scaffolds.fasta ]; then
+                mv {BIN_PATH}/${{id}}_assembly/scaffolds.fasta {BIN_PATH}/${{id}}_assembly/${{id}}_scaffolds.fasta
+                {utilpath}/convertfasta_multi2single {BIN_PATH}/${{id}}_assembly/${{id}}_scaffolds.fasta {BIN_PATH}/scaffolds 500
+            else
+                echo "No scaffolds.fasta found for $id. Skipping."
+            fi
+        done
+        """
+rule checkm2_run:
+    input:
+        reassembledbins = f"{BIN_PATH}/scaffolds",
+    output:
+        checkm2_results = directory(f"{BIN_PATH}/reassembly_checkm2_results")
+    threads: nthread
+    conda:
+        "checkm2_env"        
+    shell:
+        """
+        checkm2 predict -i {input.reassembledbins} -o {output.checkm2_results} -x fasta --thread {threads}
+        """
