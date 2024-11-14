@@ -52,7 +52,9 @@ If you have used other aligners (eg. Bowtie2, bwa-mem), use our in-house script
 `python util/get_abundance_tsv.py -i <inputdir> -l <contigslength> -m <minlength|1000>`
 
 contigslength is a tab separated textfile that should contain contig ids and length (contig_id\tlength)
-inputdir is the directly of sample-wise abundance.tsv file.`(samfiles)` 
+
+inputdir is the directly of sample-wise abundance.tsv file.`<samfiles/>` 
+
 ## Binning
 Refer to benchmarking_scripts.ipynb. Make sure order of contigs data in abundance matrix and assembly file are the same as GenomeFace assumes so by default.
 
