@@ -33,8 +33,11 @@ Requires MEGAHIT installed (https://github.com/voutcn/megahit.git)
 
 ## Prepare abundance file from aligner output
 Strobealign is the fast and accurate aligner and we used to obtain abundance matrix. (https://github.com/ksahlin/strobealign.git)
+
 `mkdir samfiles`
+
 ### pooled assembly
+
 `strobealign -t 64 --aemb megahit_out/final.contigs.fa --eqx --interleaved <sample_id>.fastq > samfiles/abundances_<sample_id>.tsv`
 
 `strobealign -t 64 megahit_out/final.contigs.fa --eqx --interleaved <sample_id>.fastq | samtools view -h -o samfiles/<sample_id>_strobealign.sam`
