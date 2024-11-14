@@ -11,21 +11,21 @@ Create a Snakemake environment (preferably using conda, [https://anaconda.org/bi
 
 Install these tools with version specified here as instructed in their respective repositories (recommended). Otherwise, use the `.yml` files in the `environments` folder for the conda environments used in this study. For McDevol, set the McDevol download path in `config.yaml`.
 
-#### To Run the Pooled Assembly Binning Pipeline
+#### To Run the coassembly binning pipeline
 Use the command below:
 
 ```
 snakemake --config dataset=<datasetname> mode=pooled threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
 ```
-#### To Run the Multisample Assembly Binning Pipeline
+#### To Run the multi-sample binning pipeline
 Navigate to \`workflow_multisample\` and use the command below:
 
 ```
 snakemake --config dataset=<datasetname> mode=multisample threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
 ```
+Bins have to be de-replicated or selected the best bin per genome based on gold-standard mapping before subjecting them to assessment.
 
-
-####  Configuration Paths for Workflow
+####  Configuring paths for workflow
 Set correct paths in your system before running the workflow.
 
 STROBEALIGNPATH: Specifies the path to Strobealign executable file used for sequence alignment. (eg. <parentpath>/strobealign/build)
@@ -37,11 +37,12 @@ ENVIRONMENT: Specifies environment path to find MetaBAT2 environment file (`.yml
 MCDEVOLPATH: Provides the location of the McDevol tool and is located at <mcdevoldownloadpath>/mcdevol.
 
 
-
-#### Reassembly bins from pooled assembly binning
+#### Reassembly bins
 Reassembly is performed using contigs in the bin and reads mapped to those contigs from all samples using SPAdes assembler (https://github.com/ablab/spades/releases/tag/v4.0.0).
 
-
+```
+snakemake --config threads=24 binpath=<binpath> binformat=<fasta|faa|fa> sampath=<alginmentpath> readpath=<fastaqfilespath> outputpath=<outputpath> --cores 24 --use-conda
+```
 
 #### Analysing results
 This study focused on couting number of near-complete (90% completeness and 5% contamination), higher quality (70% completeness and 10% contamination) and medium quality bins (50% completeness and 10% contamination) bins. Use the bash command below on CheckM2 output `quality_report.tsv`

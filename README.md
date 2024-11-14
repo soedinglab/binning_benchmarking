@@ -68,6 +68,9 @@ For sample-wise processing, end extracted fastq file will have reads from all sa
     do
         extractreads fullpath/binfastafolder ${sample}_mapfile ${sample}.fastq;
     done
+
+Refer to README of workflow to run in the entire steps of reassembly with a single run.
+
 ## Assessment
 ### CheckM2
 CheckM2 is a neural network-based method that estimates bin completeness and purity reliably. (https://github.com/chklovski/CheckM2.git) \
