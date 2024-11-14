@@ -49,10 +49,10 @@ If you have used other aligners (eg. Bowtie2, bwa-mem), use our in-house script
 `samtools view samfiles/<sample_id>_strobealign.sam | aligner2counts samfiles <sample_id> --only-mapids`
 
 ### Generate abundance matrix
-`python util/get_abundance_tsv.py -i <abund_inputdir> -l <contigslength> -m <minlength|1000>`
+`python util/get_abundance_tsv.py -i <inputdir> -l <contigslength> -m <minlength|1000>`
 
 contigslength is a tab separated textfile that should contain contig ids and length (contig_id\tlength)
-
+inputdir is the directly of sample-wise abundance.tsv file.`(samfiles)` 
 ## Binning
 Refer to benchmarking_scripts.ipynb. Make sure order of contigs data in abundance matrix and assembly file are the same as GenomeFace assumes so by default.
 
