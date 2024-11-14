@@ -48,6 +48,10 @@ If you have used other aligners (eg. Bowtie2, bwa-mem), use our in-house script
 
 `samtools view samfiles/<sample_id>_strobealign.sam | aligner2counts samfiles <sample_id> --only-mapids`
 
+### Generate abundance file
+`python util/get_abundance_tsv.py -i <abund_inputdir> -l <contigslength> -m <minlength|1000>`
+
+contigslength is a tab separated textfile that should contain contig ids and length (contig_id\tlength)
 
 ## Binning
 Refer to benchmarking_scripts.ipynb
