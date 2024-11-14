@@ -51,7 +51,7 @@ rule extractreads:
 rule reassemble:
     input:
         bin_reads = f"{BIN_PATH}/{{id}}.fastq",
-        bin_fasta = f"{BIN_PATH}/{{id}}.fasta"
+        bin_fasta = f"{BIN_PATH}/{{id}}.{FORMAT}"
     output:
         assembly=directory(f"{BIN_PATH}/{{id}}_assembly")
     params:
