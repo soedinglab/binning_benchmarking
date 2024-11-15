@@ -65,7 +65,7 @@ Process only `.bam` or `.sam` (require samtools preinstalled)
 If you have `.sam` file, you can also use `cat <input>.sam | aligner2counts <output_directory> <sample_id>`
 
 ## Generate abundance matrix
-`python util/get_abundance_tsv.py -i <inputdir> -l <contig_length> -m <minlength|1000>`
+`python get_abundance_tsv.py -i <inputdir> -l <contig_length> -m <minlength|1000>`
 
 `inputdir` - a directory where sample-wise abundance text files are located
 
