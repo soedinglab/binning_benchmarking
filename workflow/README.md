@@ -28,13 +28,13 @@ Bins have to be de-replicated or selected the best bin per genome based on gold-
 ####  Configuring paths for workflow
 Set correct paths in your system before running the workflow.
 
-STROBEALIGNPATH: Specifies the path to Strobealign executable file used for sequence alignment. (eg. <parentpath>/strobealign/build)
+`STROBEALIGNPATH`: Specifies the path to Strobealign executable file used for sequence alignment. (eg. <parentpath>/strobealign/build)
 
-UTILPATH: Specifies the path to the utility directory and contains helper scripts for binning benchmarking tasks. It is located in download directory of binning_benchmarking. (eg. <downloadpath>/binning_benchmarking/util)
+`UTILPATH` Specifies the path to the utility directory and contains helper scripts for binning benchmarking tasks. It is located in download directory of binning_benchmarking. (eg. <downloadpath>/binning_benchmarking/util)
 
-ENVIRONMENT: Specifies environment path to find MetaBAT2 environment file (`.yml`), found at <downloadpath>/binning_benchmarking/workflow/environments.
+`ENVIRONMENT`: Specifies environment path to find MetaBAT2 environment file (`.yml`), found at <downloadpath>/binning_benchmarking/workflow/environments.
 
-MCDEVOLPATH: Provides the location of the McDevol tool and is located at <mcdevoldownloadpath>/mcdevol.
+`MCDEVOLPATH`: Provides the location of the McDevol tool and is located at <mcdevoldownloadpath>/mcdevol.
 
 
 #### Reassembly bins
