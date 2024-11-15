@@ -1,13 +1,13 @@
 # binning_benchmarking
 
-Binning benchmarking involves following steps: read correction -> assembly -> mapping -> generate_abundance_matrix -> binning -> assessment
-
+Binning benchmarking involves following steps
+`read correction -> assembly -> mapping -> generate_abundance_matrix -> binning -> assessment`
 
 ## Read correction
 
 Reads are corrected by CoCo (https://github.com/soedinglab/CoCo). The correction is efficitive if k-mer counts are computed from pooled reads from all samples.
 
-**Example with cami2 strain-madness dataset**
+**Concatenate reads for CoCo correction**
 
 `cat *_reads.fq > all_reads.fq`
 
