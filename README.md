@@ -83,7 +83,7 @@ For sample-wise processing, end extracted fastq file will have reads from all sa
         extractreads fullpath/binfastafolder ${sample}_mapids ${sample}.fastq -f (binformat|fasta);
     done
 
-`allsample_mapids` is a text file containing mapped read_id and contig_id separated by `tab`. This file can be obtained from `aligner2counts` executable (see README.md in `util/`) for each sample as `<sample_id>_mapids`. Concatenate these sample-wise mapids to obtain `allsample_mapids`.
+`allsample_mapids` is a text file containing mapped read_id and contig_id separated by `tab`. This file can be obtained from `aligner2counts` executable (see README.md in `util/`) for each sample as `<sample_id>_mapids`. Concatenate these sample-wise mapids to obtain `allsample_mapids`. From extracreads run, you will get `<bin_id>.fastq`.
 
 `spades.py --12 <bin_id>.fastq --trusted-contigs <bin_id>.fasta --only-assembler --careful -o <bin_id>_assembly/ -t 12 -m 128`
 Required `SPAdes` to be installed.
