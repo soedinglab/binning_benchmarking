@@ -17,6 +17,8 @@ Use the command below:
 ```
 snakemake --config dataset=<datasetname> mode=pooled threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
 ```
+![workflow_coassembly](https://github.com/user-attachments/assets/971796e3-8bb5-4a64-87b6-22eb2f8befc3)
+
 #### To Run the multi-sample binning pipeline
 Navigate to \`workflow_multisample\` and use the command below:
 
@@ -24,13 +26,14 @@ Navigate to \`workflow_multisample\` and use the command below:
 snakemake --config dataset=<datasetname> mode=multisample threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
 ```
 Bins have to be de-replicated or selected the best bin per genome based on gold-standard mapping before subjecting them to assessment.
+![workflow_multisample](https://github.com/user-attachments/assets/9f3a312c-07f4-40bf-8b69-6de72ec43099)
 
 ####  Configuring paths for workflow
 Set correct paths in your system before running the workflow.
 
 `STROBEALIGNPATH`: Specifies the path to Strobealign executable file used for sequence alignment. (eg. <parentpath>/strobealign/build)
 
-`UTILPATH` Specifies the path to the utility directory and contains helper scripts for binning benchmarking tasks. It is located in download directory of binning_benchmarking. (eg. <downloadpath>/binning_benchmarking/util)
+`UTILPATH`: Specifies the path to the utility directory and contains helper scripts for binning benchmarking tasks. It is located in download directory of binning_benchmarking. (eg. <downloadpath>/binning_benchmarking/util)
 
 `ENVIRONMENT`: Specifies environment path to find MetaBAT2 environment file (`.yml`), found at <downloadpath>/binning_benchmarking/workflow/environments.
 
@@ -43,6 +46,7 @@ Reassembly is performed using contigs in the bin and reads mapped to those conti
 ```
 snakemake --config threads=24 binpath=<binpath> binformat=<fasta|faa|fa> sampath=<alginmentpath> readpath=<fastaqfilespath> outputpath=<outputpath> --cores 24 --use-conda
 ```
+![workflow_reassemble](https://github.com/user-attachments/assets/4f311ced-602f-450b-9dd2-8d3cbcbd0d38)
 
 #### Analysing results
 This study focused on couting number of near-complete (90% completeness and 5% contamination), higher quality (70% completeness and 10% contamination) and medium quality bins (50% completeness and 10% contamination) bins. Use the bash command below on CheckM2 output `quality_report.tsv`
