@@ -62,7 +62,7 @@ If you have used other aligners (eg. Bowtie2, bwa-mem), use our in-house script
 ## Generate abundance matrix
 `python util/get_abundance_tsv.py -i <samfiles> -l <contig_length> -m <minlength|1000>`
 
-contigslength is a tab separated textfile that should contain contig ids and length (contig_id\tlength). This file can be generated using `convertfasta_multi2single` executable (see README.md in the `util/`).
+contigslength is a tab separated textfile that should contain contig ids and length (contig_id\tlength). This file can be generated using `convertfasta_multi2single` executable (see README.md in `util/`).
 
 inputdir is the directly of sample-wise abundance.tsv file. `abundances_<sample_id>.tsv`
 
@@ -72,12 +72,15 @@ inputdir is the directly of sample-wise abundance.tsv file. `abundances_<sample_
 ## Binning
 Refer to benchmarking_scripts.ipynb. Make sure the order of contigs in abundance matrix and assembly file are the same as GenomeFace assumes so by default.
 
-## Split bins
-By default, most deep learning methods can split bins by sample id in multi-sample binning mode (McDevol, VAMB and GenomeFace). But tools such as COMEBin and MetaBAT2 don't have an option for splitting bins. To perform splitting, use our script in the `util/` folder.
+## Split bins (multi-sample binning)
+By default, most deep learning methods can split bins by sample id in multi-sample binning mode (McDevol, VAMB and GenomeFace). But tools such as COMEBin and MetaBAT2 don't have an option for splitting bins. To perform splitting, use our script in `util/`.
 
 `python splitfasta_bysampleids.py --input_dir <bindir> --output_dir <outputdir> --format <binformat|fasta>`
 
-This script assumes that sample ids are located inbetween `S` and `C` character. For example, for contig id `S1C141_284`, the script will detect sample id as `1`.
+This script assumes that sample id is located in-between `S` and `C` character. For example, from a contig id `S1C141_284`, it will detect `1` as sample id.
+
+## Remove redundancy (multi-sample binning)
+For this benchmarking, we mapped bins to source genomes to be used in AMBER for assessment as described in README.md in `util/`. However, it can be performed with de-replication approach `dRep` (https://github.com/MrOlm/drep).  We leave the option to users choice.
 
 ## Assessment
 ### CheckM2
