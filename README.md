@@ -28,7 +28,7 @@ Reads are corrected by CoCo (https://github.com/soedinglab/CoCo). The correction
 
 `splitreadsbysample <sampleid_file> <fastq_file> <outdir>` (output: <sample_id>.fastq)
 
-## Assemble reads
+## Assembly
 Requires MEGAHIT installed (https://github.com/voutcn/megahit.git)
 
 ### pooled assembly
@@ -39,7 +39,7 @@ Requires MEGAHIT installed (https://github.com/voutcn/megahit.git)
 
 `cat *_megahit_out/final.contigs.fa > allcontigs_concatenatedallsamples.fa`  (concatenate all sample assemblies into one master contig file)
 
-## Prepare abundance file from aligner output
+## Mapping
 Strobealign is the fast and accurate aligner and we used to obtain abundance matrix. (https://github.com/ksahlin/strobealign.git)
 
 `mkdir samfiles`
@@ -59,7 +59,7 @@ If you have used other aligners (eg. Bowtie2, bwa-mem), use our in-house script
 
 `samtools view samfiles/<sample_id>_strobealign.sam | aligner2counts samfiles <sample_id> --only-mapids`
 
-### Generate abundance matrix
+## Generate abundance matrix
 `python util/get_abundance_tsv.py -i <samfiles> -l <contig_length> -m <minlength|1000>`
 
 contigslength is a tab separated textfile that should contain contig ids and length (contig_id\tlength). This file can be generated using `convertfasta_multi2single` executable (see README.md in the `util/`).
@@ -72,7 +72,27 @@ inputdir is the directly of sample-wise abundance.tsv file. `abundances_<sample_
 ## Binning
 Refer to benchmarking_scripts.ipynb. Make sure the order of contigs in abundance matrix and assembly file are the same as GenomeFace assumes so by default.
 
-## Reassembly
+## Split bins
+By default, most deep learning methods can split bins by sample id in multi-sample binning mode (McDevol, VAMB and GenomeFace). But tools such as COMEBin and MetaBAT2 don't have an option for splitting bins. To perform splitting, use our script in the `util/` folder.
+
+`python splitfasta_bysampleids.py --input_dir <bindir> --output_dir <outputdir> --format <binformat|fasta>`
+
+This script assumes that sample ids are located inbetween `S` and `C` character. For example, for contig id `S1C141_284`, the script will detect sample id as `1`.
+
+## Assessment
+### CheckM2
+CheckM2 is a neural network-based method that estimates bin completeness and purity reliably. (https://github.com/chklovski/CheckM2.git) \
+`checkm2 predict --input <binning_tool>_results -o <binning_tool>_results/checkm2_results --thread 24 -x fasta`
+
+### AMBER
+For the binning of contigs from gold-standard sets, we used AMBER assessment tool. (https://github.com/CAMI-challenge/AMBER.git) \
+`amber.py <binning_tool>_cluster.tsv -g gsa_pooled_mapping_short.binning -o amber_results` where gsa_pooled\_mapping\_short.binning files for marine, strain-madness and plant-associated datasets are provided from CAMI2 assessment study.
+
+### CheckM
+CheckM is used to validate MetaBAT2 and MetaWRAP bin_refinement results. (https://github.com/Ecogenomics/CheckM.git) \
+`checkm lineage_wf <binning_tool>_results <binning_tool>_results/checkm_results -x fasta -t 24`
+
+## Reassembly (post-binning refinement)
 
 **Extract mapped reads for each bin**
 
@@ -93,19 +113,6 @@ For sample-wise processing, end extracted fastq file will have reads from all sa
 Required `SPAdes` to be installed.
 
 Refer to README of workflow to run in the entire steps of reassembly with a single run.
-
-## Assessment
-### CheckM2
-CheckM2 is a neural network-based method that estimates bin completeness and purity reliably. (https://github.com/chklovski/CheckM2.git) \
-`checkm2 predict --input <binning_tool>_results -o <binning_tool>_results/checkm2_results --thread 24 -x fasta`
-
-### AMBER
-For the binning of contigs from gold-standard sets, we used AMBER assessment tool. (https://github.com/CAMI-challenge/AMBER.git) \
-`amber.py <binning_tool>_cluster.tsv -g gsa_pooled_mapping_short.binning -o amber_results` where gsa_pooled\_mapping\_short.binning files for marine, strain-madness and plant-associated datasets are provided from CAMI2 assessment study.
-
-### CheckM
-CheckM is used to validate MetaBAT2 and MetaWRAP bin_refinement results. (https://github.com/Ecogenomics/CheckM.git) \
-`checkm lineage_wf <binning_tool>_results <binning_tool>_results/checkm_results -x fasta -t 24`
 
 ## Plotting
 Refer to plots.ipynb
