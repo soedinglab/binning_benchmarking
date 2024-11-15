@@ -12,8 +12,16 @@ As of now, it is specialized to process only bowtie mapping to compute abundance
 # Installation
 	g++ -o aligner2counts aligner2counts.cpp -O3
 	export PATH=${PATH}/$(pwd) (save this line in .bashrc or .bash_profile for easy access)
+ 	g++ -o extractreads extractreads.cpp -O3
+	export PATH=${PATH}/$(pwd)
+ 	g++ -o convertfasta_multi2single convertfasta_multi2single.cpp -O3
+	export PATH=${PATH}/$(pwd)
 Require gcc version `>=9.4.0`
 
+\u2757 If you compile from source under macOS we recommend installing and using `gcc` instead of `clang` as a compiler. `gcc` can be installed with Homebrew. Force `cmake` to use `gcc` as a compiler by running:
+
+    CC="$(brew --prefix)/bin/gcc-14"
+    CCX="$(brew --prefix)/bin/g++-14"
 
 # Usage
 	Usage: aligner command | ./aligner2counts outdir outputname [--minlength N] [--no-coverage] [--single] [--only-mapids] [--qcov X] [--seq-id Y] [--strobealign]
