@@ -80,19 +80,24 @@ By default, most deep learning methods can split bins by sample id in multi-samp
 This script assumes that sample id is located in-between `S` and `C` character. For example, from a contig id `S1C141_284`, it will detect `1` as sample id.
 
 ## Remove redundancy (multi-sample binning)
-For this benchmarking, we mapped bins to source genomes to be used in AMBER for assessment as described in README.md in `util/`. However, it can be performed with de-replication approach `dRep` (https://github.com/MrOlm/drep).  We leave the option to users choice.
+For this benchmarking, we mapped bins to source genomes to be used in AMBER for assessment as described in README.md in `util/`. However, it can be performed with de-replication approach `dRep` (https://github.com/MrOlm/drep). We leave the choice to the user.
 
 ## Assessment
 ### CheckM2
-CheckM2 is a neural network-based method that estimates bin completeness and purity reliably. (https://github.com/chklovski/CheckM2.git) \
+CheckM2 is a neural network-based method that estimates bin completeness and purity reliably. (https://github.com/chklovski/CheckM2.git)
+
 `checkm2 predict --input <binning_tool>_results -o <binning_tool>_results/checkm2_results --thread 24 -x fasta`
 
 ### AMBER
-For the binning of contigs from gold-standard sets, we used AMBER assessment tool. (https://github.com/CAMI-challenge/AMBER.git) \
-`amber.py <binning_tool>_cluster.tsv -g gsa_pooled_mapping_short.binning -o amber_results` where gsa_pooled\_mapping\_short.binning files for marine, strain-madness and plant-associated datasets are provided from CAMI2 assessment study.
+For the binning of contigs from gold-standard sets, we used AMBER assessment tool. (https://github.com/CAMI-challenge/AMBER.git)
+
+`amber.py <binning_tool>_cluster.tsv -g gsa_pooled_mapping_short.binning -o amber_results`
+
+where gsa_pooled\_mapping\_short.binning files for marine, strain-madness and plant-associated datasets are provided from CAMI2 assessment study.
 
 ### CheckM
-CheckM is used to validate MetaBAT2 and MetaWRAP bin_refinement results. (https://github.com/Ecogenomics/CheckM.git) \
+CheckM is used to validate MetaBAT2 and MetaWRAP bin_refinement results. (https://github.com/Ecogenomics/CheckM.git)
+
 `checkm lineage_wf <binning_tool>_results <binning_tool>_results/checkm_results -x fasta -t 24`
 
 ## Reassembly (post-binning refinement)
