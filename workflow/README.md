@@ -18,7 +18,7 @@ Use the command below:
 snakemake --config dataset=<datasetname> mode=pooled threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
 ```
 ![workflow_coassembly](https://github.com/user-attachments/assets/971796e3-8bb5-4a64-87b6-22eb2f8befc3)
-<img src="https://github.com/user-attachments/assets/971796e3-8bb5-4a64-87b6-22eb2f8befc3" alt="workflow_coassembly" width="400"/>
+<img src="https://github.com/user-attachments/assets/971796e3-8bb5-4a64-87b6-22eb2f8befc3" alt="workflow_coassembly" width="800"/>
 #### To Run the multi-sample binning pipeline
 Navigate to \`workflow_multisample\` and use the command below:
 
