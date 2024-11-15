@@ -18,7 +18,7 @@ As of now, it is specialized to process only bowtie mapping to compute abundance
 	export PATH=${PATH}/$(pwd)
 Require gcc version `>=9.4.0`
 
-\u2757 If you compile from source under macOS we recommend installing and using `gcc` instead of `clang` as a compiler. `gcc` can be installed with Homebrew. Force `cmake` to use `gcc` as a compiler by running:
+❗️If you compile from source under macOS we recommend installing and using `gcc` instead of `clang` as a compiler. `gcc` can be installed with Homebrew. Force `cmake` to use `gcc` as a compiler by running:
 
     CC="$(brew --prefix)/bin/gcc-14"
     CCX="$(brew --prefix)/bin/g++-14"
