@@ -2,11 +2,11 @@
 
 Binning benchmarking involves following steps
 
-coassembly: `read correction -> assembly -> mapping -> generate_abundance_matrix -> binning -> assessment`
+coassembly - `read correction -> assembly -> mapping -> generate_abundance_matrix -> binning -> assessment`
 
-single-sample: `read correction -> single-sample_assembly -> single-sampleread_mapping -> generate_abundance_matrix -> binning -> assessment`
+single-sample - `read correction -> single-sample_assembly -> single-sampleread_mapping -> generate_abundance_matrix -> binning -> assessment`
  
-multi-sample: `read correction -> sample-wise_assembly -> pool_allsampleassembly_contigs -> mapping -> generate_abundance_matrix -> binning -> split_bins -> remove_redundantbins -> assessment`
+multi-sample - `read correction -> sample-wise_assembly -> pool_allsampleassembly_contigs -> mapping -> generate_abundance_matrix -> binning -> split_bins -> remove_redundantbins -> assessment`
 
 ## Read correction
 
