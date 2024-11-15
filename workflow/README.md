@@ -11,6 +11,17 @@ Create a Snakemake environment (preferably using conda, [https://anaconda.org/bi
 
 Install these tools with version specified here as instructed in their respective repositories (recommended). Otherwise, use the `.yml` files in the `environments` folder for the conda environments used in this study. For McDevol, set the McDevol download path in `config.yaml`.
 
+####  Configuring paths for workflow
+Set correct paths in your system before running the workflow.
+
+`STROBEALIGNPATH`: Specifies the path to Strobealign executable file used for sequence alignment. (eg. <parentpath>/strobealign/build)
+
+`UTILPATH`: Specifies the path to the utility directory and contains helper scripts for binning benchmarking tasks. It is located in download directory of binning_benchmarking. (eg. <downloadpath>/binning_benchmarking/util)
+
+`ENVIRONMENT`: Specifies environment path to find MetaBAT2 environment file (`.yml`), found at <downloadpath>/binning_benchmarking/workflow/environments.
+
+`MCDEVOLPATH`: Provides the location of the McDevol tool and is located at <mcdevoldownloadpath>/mcdevol.
+
 #### To Run the coassembly binning pipeline
 Use the command below:
 
@@ -26,18 +37,6 @@ snakemake --config dataset=<datasetname> mode=multisample threads=24 readpath=<f
 ```
 Bins have to be de-replicated or selected the best bin per genome based on gold-standard mapping before subjecting them to assessment.
 ![workflow_multisample](https://github.com/user-attachments/assets/9f3a312c-07f4-40bf-8b69-6de72ec43099)
-
-####  Configuring paths for workflow
-Set correct paths in your system before running the workflow.
-
-`STROBEALIGNPATH`: Specifies the path to Strobealign executable file used for sequence alignment. (eg. <parentpath>/strobealign/build)
-
-`UTILPATH`: Specifies the path to the utility directory and contains helper scripts for binning benchmarking tasks. It is located in download directory of binning_benchmarking. (eg. <downloadpath>/binning_benchmarking/util)
-
-`ENVIRONMENT`: Specifies environment path to find MetaBAT2 environment file (`.yml`), found at <downloadpath>/binning_benchmarking/workflow/environments.
-
-`MCDEVOLPATH`: Provides the location of the McDevol tool and is located at <mcdevoldownloadpath>/mcdevol.
-
 
 #### Reassembly bins
 Reassembly is performed using contigs in the bin and reads mapped to those contigs from all samples using SPAdes assembler (https://github.com/ablab/spades/releases/tag/v4.0.0).
