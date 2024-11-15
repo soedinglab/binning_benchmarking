@@ -1,6 +1,7 @@
 # binning_benchmarking
 
 Binning benchmarking involves following steps
+
 `read correction -> assembly -> mapping -> generate_abundance_matrix -> binning -> assessment`
 
 ## Read correction
@@ -25,11 +26,11 @@ Reads are corrected by CoCo (https://github.com/soedinglab/CoCo). The correction
 
 ## Assemble reads
 Requires MEGAHIT installed (https://github.com/voutcn/megahit.git)
+
 ### pooled assembly
 `megahit --12 *_reads.fastq -t 64 --presets meta-sensitive -o megahit_out`
 
 ### sample-wise assembly
-
 `megahit --12 <sample_id>_reads.fastq -t 64 --presets meta-sensitive -o <sample_id>_megahit_out`
 
 `cat *_megahit_out/final.contigs.fa > allcontigs_concatenatedallsamples.fa`  (concatenate all sample assemblies into one master contig file)
@@ -55,16 +56,17 @@ If you have used other aligners (eg. Bowtie2, bwa-mem), use our in-house script
 `samtools view samfiles/<sample_id>_strobealign.sam | aligner2counts samfiles <sample_id> --only-mapids`
 
 ### Generate abundance matrix
-`python util/get_abundance_tsv.py -i <samfiles> -l <contigslength> -m <minlength|1000>`
+`python util/get_abundance_tsv.py -i <samfiles> -l <contig_length> -m <minlength|1000>`
 
-contigslength is a tab separated textfile that should contain contig ids and length (contig_id\tlength)
+contigslength is a tab separated textfile that should contain contig ids and length (contig_id\tlength). This file can be generated using `convertfasta_multi2single` executable (see README.md in the `util/`).
 
 inputdir is the directly of sample-wise abundance.tsv file. `abundances_<sample_id>.tsv`
 
+### Sort alignment files
+`samtools sort samfiles/<sample_id>_strobealign.sam -o samfiles/<sample_id>_strobealign_sorted.bam`
+
 ## Binning
 Refer to benchmarking_scripts.ipynb. Make sure the order of contigs in abundance matrix and assembly file are the same as GenomeFace assumes so by default.
-
-# Post binning steps
 
 ## Reassembly
 
@@ -72,14 +74,19 @@ Refer to benchmarking_scripts.ipynb. Make sure the order of contigs in abundance
 
 For combined read fastq and mapfile
 
-`extractreads <fullpath/binfastafolder> <allsample_mapfile> <all_reads.corr.reads.fq>`
+`extractreads <fullpath/binfastafolder> <allsample_mapids> <all_reads.corr.reads.fq> -f (binformat|fasta)`
 
 For sample-wise processing, end extracted fastq file will have reads from all samples
 
     for sample in samplelist;
     do
-        extractreads fullpath/binfastafolder ${sample}_mapfile ${sample}.fastq;
+        extractreads fullpath/binfastafolder ${sample}_mapids ${sample}.fastq -f (binformat|fasta);
     done
+
+`allsample_mapids` is a text file containing mapped read_id and contig_id separated by `tab`. This file can be obtained from `aligner2counts` executable (see README.md in `util/`) for each sample as `<sample_id>_mapids`. Concatenate these sample-wise mapids to obtain `allsample_mapids`.
+
+`spades.py --12 <bin_id>.fastq --trusted-contigs <bin_id>.fasta --only-assembler --careful -o <bin_id>_assembly/ -t 12 -m 128`
+Required `SPAdes` to be installed.
 
 Refer to README of workflow to run in the entire steps of reassembly with a single run.
 
