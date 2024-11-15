@@ -2,7 +2,7 @@
 
 Create a Snakemake environment (preferably using conda, [https://anaconda.org/bioconda/snakemake](https://anaconda.org/bioconda/snakemake)) to run the Snakemake pipeline. Singularity container platform should be preinstalled. To reproduce the results, install the binning tools and assessment tool used here, namely:
 
-- **McDevol** (v0.1.0, [git@github.com:soedinglab/McDevol.git](git@github.com:soedinglab/McDevol.git) *not yet public*)
+- **McDevol** (v0.1.0, [git@github.com:soedinglab/McDevol.git](git@github.com:soedinglab/McDevol.git))
 - **VAMB** (v4.1.3, [https://github.com/RasmussenLab/vamb.git](https://github.com/RasmussenLab/vamb.git))
 - **COMEBin** (v1.0.4, [https://github.com/ziyewang/COMEBin.git](https://github.com/ziyewang/COMEBin.git))
 - **GenomeFace** (prerelease, [https://gist.github.com/richardlett/f56156631ea8167983f6e670b119a767](https://gist.github.com/richardlett/f56156631ea8167983f6e670b119a767))
