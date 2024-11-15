@@ -1,4 +1,4 @@
-## Build cpp executables
+## Compile cpp executables
 	g++ -o aligner2counts aligner2counts.cpp -O3
 	export PATH=${PATH}/$(pwd) (save this line in .bashrc or .bash_profile for easy access)
  	g++ -o extractreads extractreads.cpp -O3
