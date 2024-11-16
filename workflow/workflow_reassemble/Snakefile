@@ -16,10 +16,6 @@ BIN_IDS = set(BIN_IDS)
 
 rule all:
     input:
-        # expand(f"{ALIGNMENT_PATH}/{{id}}_mapids", id=SAMPLE_IDS),
-        # expand(f"{BIN_PATH}/{{id}}.fastq", id=BIN_IDS),
-        # expand(f"{BIN_PATH}/{{id}}_assembly", id=BIN_IDS),
-        # f"{BIN_PATH}/scaffolds",
         f"{BIN_PATH}/reassembly_checkm2_results"
 rule get_contigread_mapping:
     input:
