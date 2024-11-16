@@ -12,15 +12,17 @@ Create a Snakemake environment (preferably using conda, [https://anaconda.org/bi
 Install these tools with version specified here as instructed in their respective repositories (recommended). Otherwise, use the `.yml` files in the `environments` folder for the conda environments used in this study. For McDevol, set the McDevol download path in `config.yaml`.
 
 ####  Configuring paths for workflow
-Set correct paths in your system before running the workflow.
+Set correct paths in `config.yaml` of respective workflows before start running.
 
 `STROBEALIGNPATH`: Specifies the path to Strobealign executable file used for sequence alignment. (eg. <parentpath>/strobealign/build)
 
 `UTILPATH`: Specifies the path to the utility directory and contains helper scripts for binning benchmarking tasks. It is located in download directory of binning_benchmarking. (eg. <downloadpath>/binning_benchmarking/util)
 
-`ENVIRONMENT`: Specifies environment path to find MetaBAT2 environment file (`.yml`), found at <downloadpath>/binning_benchmarking/workflow/environments.
+`ENVIRONMENT`: Specifies environment path to find MetaBAT2 environment file (`.yml`), can be found at <downloadpath>/binning_benchmarking/workflow/environments.
 
-`MCDEVOLPATH`: Provides the location of the McDevol tool and is located at <mcdevoldownloadpath>/mcdevol.
+`MCDEVOLPATH`: Specifies the location of the McDevol tool which can be found in <mcdevoldownloadpath>/mcdevol.
+
+`SPADESPATH`: Specifies the path to executable file of SPAdes assembler.
 
 **! Note:** argument inputs for files and folders should contain `absolute path` for all workflows.  
 
