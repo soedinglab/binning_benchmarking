@@ -22,7 +22,7 @@ Set correct paths in your system before running the workflow.
 
 `MCDEVOLPATH`: Provides the location of the McDevol tool and is located at <mcdevoldownloadpath>/mcdevol.
 
-**!** Note: argument inputs for files and folders should contain `absolute path`.  
+****!** Note:** argument inputs for files and folders should contain `absolute path`.  
 
 #### To Run the coassembly binning pipeline
 Use the command below:
