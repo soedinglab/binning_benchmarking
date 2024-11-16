@@ -46,7 +46,7 @@ Bins have to be de-replicated or selected the best bin per genome based on gold-
 Reassembly is performed using contigs in the bin and reads mapped to those contigs from all samples using SPAdes assembler (https://github.com/ablab/spades/releases/tag/v4.0.0).
 
 ```
-snakemake --config threads=24 binpath=<binpath> binformat=<fasta|faa|fa> sampath=<alginmentpath> readpath=<fastaqfilespath> outputpath=<outputpath> --cores 24 --use-conda
+snakemake --config threads=24 binpath=<binpath> binformat=<fasta|faa|fa> sampath=<alginmentpath> readpath=<fastaqfilespath> readformat=<fastq|fq> outputpath=<outputpath> --cores 24 --use-conda
 ```
 <img src="https://github.com/user-attachments/assets/4f311ced-602f-450b-9dd2-8d3cbcbd0d38" alt="workflow_reassemble" width="800"/>
 
