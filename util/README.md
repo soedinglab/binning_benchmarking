@@ -81,7 +81,7 @@ If you have `.sam` file, you can also use `cat <input>.sam | aligner2counts <out
 ## Predict single-copy marker genes
 `python pyrodigal_prediction.py --seq <contigseq.fasta> --outdir <outputdir>`
 
-Required `pyhmmer` and `pyrodigal` installed.
+The installation of `pyhmmer` and `pyrodigal` is required.
 
 ## Extract reads from raw reads file to perform reassembly
 `extractreads <fullpath/binfastafolder> <allsample_mapfile> <all_reads.corr.reads.fq> -f (binformat|fasta)`
@@ -102,7 +102,7 @@ This step was used to assess bins obtained from MEGAHIT assembled contigs using 
 `contig_length` - a `tab` separated text file with contig_id and length
 
 ## Split concatenated read file by sample id
-This step was required to get sample-wise reads back from concatenated corrected reads output from CoCo.
+This step was required to get sample-wise reads from CoCo output obtained for concatenated corrected reads as input.
 `splitreadsbysample <sample_ids> <concatenatedreads.fastq> <outdir>`
 
 `sample_ids` - a text file containing a list of sample ids
