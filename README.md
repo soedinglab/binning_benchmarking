@@ -70,7 +70,7 @@ inputdir is the directory of sample-wise abundance.tsv file. `abundances_<sample
 `samtools sort samfiles/<sample_id>_strobealign.sam -o samfiles/<sample_id>_strobealign_sorted.bam`
 
 ## Binning
-Refer to benchmarking_scripts.ipynb. Make sure that the order of contigs in abundance matrix and assembly fasta file are the same. GenomeFace assumes so by default.
+Refer to benchmarking_scripts.ipynb. Ensure the order of contigs in the abundance matrix matches the assembly FASTA file.
 
 ## Split bins (multi-sample binning)
 By default, most deep learning methods can split bins by sample id in multi-sample binning mode (McDevol, VAMB and GenomeFace). But tools such as COMEBin and MetaBAT2 don't have an option for it. To perform splitting, use our script in `util/`.
