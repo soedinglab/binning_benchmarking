@@ -9,7 +9,7 @@ Create a Snakemake environment (preferably using conda, [https://anaconda.org/bi
 - **MetaBAT2** (v2.17, [https://anaconda.org/bioconda/metabat2](https://anaconda.org/bioconda/metabat2))
 - **CheckM2** (v1.0.3, [https://github.com/chklovski/CheckM2.git](https://github.com/chklovski/CheckM2.git))
 
-Install these tools with version specified here as instructed in their respective repositories (recommended). Otherwise, use the `.yml` files in the `environments` folder for the conda environments used in this study. For McDevol, set the McDevol download path in `config.yaml`. Reassembly module can work on Linux and MacOS whereas coassembly binning and multi-sample binning workflows work only on Linux OS duot to non-availability of some tools for MacOS.
+Install these tools with version specified here as instructed in their respective repositories (recommended). Otherwise, use the `.yml` files in the `environments` folder for the conda environments used in this study. For McDevol, set the McDevol download path in `config.yaml`. Reassembly module has been tested and can work on both Linux and MacOS systesm whereas workflows for coassembly and multi-sample binning work only on Linux OS due to non-availability of some tools for MacOS.
 
 ####  Configuring paths for workflow
 Set correct paths in `config.yaml` of respective workflows before start running.
