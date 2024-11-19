@@ -25,9 +25,9 @@ def split_fasta_by_sample(input_dir, output_dir, fasta_format):
             for line in file:
                 line = line.strip()
 
-                if line.startswith(">"):  # Header line
-                    if current_header:  # If there's an existing sequence, store it
-                        sample_id = current_header.split('S')[1].split('C')[0]  # Extract sample ID
+                if line.startswith(">"):
+                    if current_header:
+                        sample_id = current_header.split('S')[1].split('C')[0]
                         sample_dict[sample_id].append((current_header, ''.join(current_sequence)))
 
                     # Reset for the new header
