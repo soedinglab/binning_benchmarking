@@ -6,7 +6,7 @@ GenomeFace	108	168	199	60	31	marine pooled
 MetaBAT2	110	167	198	57	31	marine pooled
 CONCOCT	33	83	115	50	32	marine pooled
 MaxBin2	76	123	140	47	17	marine pooled
-MetaWRAP	102	149	172	47	23	marine pooled
+MetaWRAP	110	176	211	66	35	marine pooled
 McDevol	105	140	150	35	10	marine reassembly
 VAMB	123	161	176	38	15	marine reassembly
 COMEBin	135	179	212	44	33	marine reassembly
@@ -14,7 +14,7 @@ GenomeFace	123	179	202	56	23	marine reassembly
 MetaBAT2	119	180	201	61	21	marine reassembly
 CONCOCT	59	94	121	35	27	marine reassembly
 MaxBin2	88	129	142	41	13	marine reassembly
-MetaWRAP	102	156	177	54	21	marine reassembly
+MetaWRAP	120	190	218	70	28	marine reassembly
 McDevol	202	348	394	146	46	marine multisample
 VAMB	183	277	332	94	55	marine multisample
 COMEBin	1	38	83	37	45	marine multisample
@@ -27,7 +27,7 @@ GenomeFace	13	19	20	6	1	strain pooled
 MetaBAT2	14	17	19	3	2	strain pooled
 CONCOCT	12	15	16	3	1	strain pooled
 MaxBin2	8	13	14	5	1	strain pooled
-MetaWRAP	13	16	19	3	3	strain pooled
+MetaWRAP	14	19	20	5	1	strain pooled
 McDevol	13	18	18	5	0	strain reassembly
 VAMB	14	18	18	4	0	strain reassembly
 COMEBin	12	16	18	4	2	strain reassembly
@@ -35,7 +35,7 @@ GenomeFace	13	18	19	5	1	strain reassembly
 MetaBAT2	14	17	19	3	2	strain reassembly
 CONCOCT	12	16	16	4	0	strain reassembly
 MaxBin2	8	11	13	3	2	strain reassembly
-MetaWRAP	13	14	16	1	2	strain reassembly
+MetaWRAP	14	19	19	1	2	strain reassembly
 McDevol	344	534	614	190	80	strain multisample
 VAMB	240	324	354	84	30	strain multisample
 COMEBin	0	7	67	7	60	strain multisample
@@ -48,7 +48,7 @@ GenomeFace	17	41	55	24	14	plant pooled
 MetaBAT2	22	47	49	25	2	plant pooled
 CONCOCT	12	35	40	23	5	plant pooled
 MaxBin2	16	42	45	26	3	plant pooled
-MetaWRAP	20	50	52	30	2	plant pooled
+MetaWRAP	25	54	60	29	6	plant pooled
 McDevol	22	42	44	20	2	plant reassembly
 VAMB	23	39	41	16	2	plant reassembly
 COMEBin	28	55	58	27	3	plant reassembly
@@ -56,4 +56,4 @@ GenomeFace	21	42	55	21	13	plant reassembly
 MetaBAT2	25	48	49	23	1	plant reassembly
 CONCOCT	17	38	43	21	5	plant reassembly
 MaxBin2	22	44	48	22	4	plant reassembly
-MetaWRAP	22	52	53	30	1	plant reassembly
+MetaWRAP	27	54	59	27	5	plant reassembly
