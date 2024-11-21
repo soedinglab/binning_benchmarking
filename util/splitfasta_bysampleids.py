@@ -44,7 +44,7 @@ def split_fasta_by_sample(input_dir, output_dir, fasta_format):
 
         # Write output FASTA files for each sample ID
         for sample_id, sequences in sample_dict.items():
-            output_file = os.path.join(output_dir, f"sample_{sample_id}_{input_name}.fasta")
+            output_file = os.path.join(output_dir, f"S{sample_id}_{input_name}.fasta")
             with open(output_file, 'w') as out_file:
                 for header, sequence in sequences:
                     out_file.write(f"{header}\n{sequence}\n")
