@@ -103,6 +103,7 @@ This step was used to assess bins obtained from MEGAHIT assembled contigs using 
 
 ## Split concatenated read file by sample id
 This step was required to get sample-wise reads from CoCo output obtained for concatenated corrected reads as input.
-`splitreadsbysample <sample_ids> <concatenatedreads.fastq> <outdir>`
+`splitreadsbysample <sample_ids> <concatenatedreads.fastq> <outdir> [--paired]`
 
 `sample_ids` - a text file containing a list of sample ids
+`--paired` - flag to indicate if concatenated file contains paired-end reads but not interleaved (default, interleaved or single-end)
