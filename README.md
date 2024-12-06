@@ -37,7 +37,7 @@ MEGAHIT must be installed (https://github.com/voutcn/megahit.git)
 ### sample-wise assembly
 `megahit --12 <sample_id>_reads.fastq -t 64 --presets meta-sensitive -o <sample_id>_megahit_out`
 
-`cat *_megahit_out/final.contigs.fa > allcontigs_concatenatedallsamples.fa`  (concatenate all sample assemblies into one master file)
+`cat *_megahit_out/final.contigs.fa > allcontigs_concatenatedallsamples.fa`  (concatenate all sample assemblies into one master file, make sure that headers of sample-wise assemblies are prefixed with sample id spearated by 'C')
 
 ## Mapping
 Strobealign is the fast and accurate aligner. We used to obtain the abundance matrix. (https://github.com/ksahlin/strobealign.git)
