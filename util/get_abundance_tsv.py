@@ -4,6 +4,7 @@ import pandas as pd
 import argparse
 import glob
 import os
+import sys
 import re
 
 parser = argparse.ArgumentParser(prog='get_abundance_tsv.py', description="Process abundance files\n")
@@ -21,7 +22,7 @@ if not os.path.isdir(directory):
     sys.exit(1)
 
 if not os.path.isfile(length_file):
-    print(f"Error: The contig length file '{contig_length}' does not exist or is not a file.")
+    print(f"Error: The contig length file '{args.contig_length}' does not exist or is not a file.")
     sys.exit(1)
 
 abund_files = glob.glob(os.path.join(directory, 'abundances*.tsv'))
@@ -30,7 +31,7 @@ for file_path in abund_files:
     df = pd.read_csv(file_path, sep='\t', header=None)
     
     file_name = os.path.basename(file_path)
-    file_id = os.path.splitext(file_name)[0].replace('abundances_S','').replace('R','') # Extracts just the file name without .txt
+    file_id = os.path.splitext(file_name)[0].replace('abundances_','')
     
     df['2'] = file_id
     data_list.append(df)
