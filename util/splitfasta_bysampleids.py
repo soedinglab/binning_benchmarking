@@ -27,7 +27,7 @@ def split_fasta_by_sample(input_dir, output_dir, fasta_format):
 
                 if line.startswith(">"):
                     if current_header:
-                        sample_id = current_header.split('S')[1].split('C')[0]
+                        sample_id = current_header.split('>')[1].split('C')[0]
                         sample_dict[sample_id].append((current_header, ''.join(current_sequence)))
 
                     # Reset for the new header
@@ -39,7 +39,7 @@ def split_fasta_by_sample(input_dir, output_dir, fasta_format):
 
             # Handle the last sequence in the file
             if current_header:
-                sample_id = current_header.split('S')[1].split('C')[0]
+                sample_id = current_header.split('>')[1].split('C')[0]
                 sample_dict[sample_id].append((current_header, ''.join(current_sequence)))
 
         # Write output FASTA files for each sample ID
