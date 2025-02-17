@@ -43,7 +43,7 @@ fractional_counts.columns = ['contig_id', 'abundance', 'sample_id']
 read_counts = fractional_counts.pivot_table(index = 'contig_id', columns = 'sample_id', values = 'abundance').sort_index(axis=1)
 sample_count = len(read_counts.columns)
 read_counts['contigName'] = read_counts.index
-read_counts['contigLen'] = read_counts['contigName'].map(length_dict)
+read_counts['contigLen'] = read_counts['contigName'].map(length_dict).astype(int)
 read_counts = read_counts[read_counts['contigLen']>=minlength]
 read_counts.loc[:,'totalAvgDepth'] = read_counts.iloc[:,0:sample_count].sum(axis=1)
 read_counts = read_counts[list(read_counts.columns[-3:])+list(read_counts.columns[:-3])]
