@@ -3,7 +3,7 @@ configfile: 'config.yaml'
 utilpath = config['paths']['UTILPATH']
 nthread = max(int(config['threads']), 8)
 READ_PATH = config['readpath']
-READ_FORMAT = config['readformat]
+READ_FORMAT = config['readformat']
 BIN_PATH = config['binpath']
 ALIGNMENT_PATH = config['sampath']
 FORMAT = config['binformat']
