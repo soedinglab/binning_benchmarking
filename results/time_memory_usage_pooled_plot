@@ -1,22 +1,73 @@
 Tools	Datasets	Memory (GB)	Time (minutes)
-McDevol	marine	17.2	70.8167
 VAMB	marine	1.8	23.4167
-VAMB (w/o data processing)	marine	1.8	19.1833
+VAMB (w/o data preprocessing)	marine	1.8	19.1833
+SemiBin2	marine	24.2	68.6615
+SemiBin2 (w/o data preprocessing)	marine	24.2	56.389667
 COMEBin	marine	14.6	362.5
-COMEBin (w/o data processing)	marine	14.6	293.25
+COMEBin (w/o data preprocessing)	marine	14.6	293.25
 GenomeFace	marine	17.6	2.6
+TaxVAMB	marine	10.4	109.916667
+TaxVAMB (w/o data preprocessing)	marine	10.4	106.176167
+TaxVAMB_wo_taxometer	marine	10.2	92.116667
+TaxVAMB_wo_taxometer (w/o data preprocessing)	marine	10.2	87.371667
 MetaBat2	marine	3.9	5.55
-McDevol	strain-madness	4.5	32.45
 VAMB	strain-madness	2.8	16.8833
-VAMB (w/o data processing)	strain-madness	2.8	3.3833
+VAMB (w/o data preprocessing)	strain-madness	2.8	3.3833
+SemiBin2	strain-madness	37	29.237
+SemiBin2 (w/o data preprocessing)	strain-madness	37	19.180167
 COMEBin	strain-madness	4.4	86.55
-COMEBin (w/o data processing)	strain-madness	4.4	40.26
+COMEBin (w/o data preprocessing)	strain-madness	4.4	40.26
 GenomeFace	strain-madness	16	2.45
+TaxVAMB	strain-madness	3.6	20.075833
+TaxVAMB (w/o data preprocessing)	strain-madness	3.6	8.479333
+TaxVAMB_wo_taxometer	strain-madness	3.6	19.332833
+TaxVAMB_wo_taxometer (w/o data preprocessing)	strain-madness	3.6	7.502833
 MetaBat2	strain-madness	1.7	0.2
-McDevol	plant-associated	13.3	58.15
 VAMB	plant-associated	3.8	21.6
-VAMB (w/o data processing)	plant-associated	3.8	14.4
+VAMB (w/o data preprocessing)	plant-associated	3.8	14.4
+SemiBin2	plant-associated	26	67.0515
+SemiBin2 (w/o data preprocessing)	plant-associated	26	55.9815
 COMEBin	plant-associated	13.7	284.6
-COMEBin (w/o data processing)	plant-associated	13.7	230.77
+COMEBin (w/o data preprocessing)	plant-associated	13.7	230.77
 GenomeFace	plant-associated	14.6	2.0833
+TaxVAMB	plant-associated	16.2	147.7
+TaxVAMB (w/o data preprocessing)	plant-associated	16.2	141.418833
+TaxVAMB_wo_taxometer	plant-associated	16.1	120.183333
+TaxVAMB_wo_taxometer (w/o data preprocessing)	plant-associated	16.1	114.413833
 MetaBat2	plant-associated	2.1	1.5833
+VAMB	humangut	3.7	46.36
+VAMB (w/o data preprocessing)	humangut	3.7	39.2135
+SemiBin2	humangut	26.6	145.936167
+SemiBin2 (w/o data preprocessing)	humangut	26.6	120.127167
+COMEBin	humangut	NA	1044.393
+COMEBin (w/o data preprocessing)	humangut	NA	954.432
+GenomeFace	humangut	32.5	8.62
+TaxVAMB	humangut	15	523.383333
+TaxVAMB (w/o data preprocessing)	humangut	15	517.25
+TaxVAMB_wo_taxometer	humangut	14.6	1016.6
+TaxVAMB_wo_taxometer (w/o data preprocessing)	humangut	14.6	1010.359667
+MetaBat2	humangut	9.4	574.21
+VAMB	blacksoil	4	69.63
+VAMB (w/o data preprocessing)	blacksoil	4	61.01
+SemiBin2	blacksoil	28.1	591.673667
+SemiBin2 (w/o data preprocessing)	blacksoil	28.1	573.518167
+COMEBin	blacksoil	NA	2685.777
+COMEBin (w/o data preprocessing)	blacksoil	35.4	2595.775
+GenomeFace	blacksoil	42.6	14.43
+TaxVAMB	blacksoil	16.5	569.966667
+TaxVAMB (w/o data preprocessing)	blacksoil	16.5	561.7785
+TaxVAMB_wo_taxometer	blacksoil	25	701
+TaxVAMB_wo_taxometer (w/o data preprocessing)	blacksoil	25	694.101
+MetaBat2	blacksoil	8.3	497.83
+VAMB	neonatal	3	13.26
+VAMB (w/o data preprocessing)	neonatal	3	8.44
+SemiBin2	neonatal	29	46.731833
+SemiBin2 (w/o data preprocessing)	neonatal	29	37.778167
+COMEBin	neonatal	5.1	168.774
+COMEBin (w/o data preprocessing)	neonatal	5.1	126.83
+GenomeFace	neonatal	13.2	4.43
+TaxVAMB	neonatal	10	62.283333
+TaxVAMB (w/o data preprocessing)	neonatal	10	58.35
+TaxVAMB_wo_taxometer	neonatal	10	54.703167
+TaxVAMB_wo_taxometer (w/o data preprocessing)	neonatal	10	50.678
+MetaBat2	neonatal	2	1.88

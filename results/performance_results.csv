@@ -1,49 +1,85 @@
 Tools	High-quality	Medium-quality	Low-quality	Medium	Low	Dataset
-McDevol	107	158	180	51	22	marine pooled
 VAMB	109	158	172	49	14	marine pooled
+SemiBin2	96	165	198	69	33	marine pooled
 COMEBin	105	170	197	65	27	marine pooled
 GenomeFace	108	168	199	60	31	marine pooled
+TaxVAMB	111	178	211	67	33	marine pooled
+TaxVAMB_wo_taxometer	108	172	207	64	35	marine pooled
 MetaBAT2	110	167	198	57	31	marine pooled
-CONCOCT	33	83	115	50	32	marine pooled
-MaxBin2	76	123	140	47	17	marine pooled
-MetaWRAP	110	176	211	66	35	marine pooled
-McDevol	119	166	186	47	20	marine reassembly
 VAMB	123	161	176	38	15	marine reassembly
+SemiBin2	121	177	213	56	36	marine reassembly
 COMEBin	135	179	212	44	33	marine reassembly
 GenomeFace	123	179	202	56	23	marine reassembly
+TaxVAMB	135	191	218	56	27	marine reassembly
+TaxVAMB_wo_taxometer	131	183	215	52	32	marine reassembly
 MetaBAT2	119	180	201	61	21	marine reassembly
-CONCOCT	59	94	121	35	27	marine reassembly
-MaxBin2	88	129	142	41	13	marine reassembly
-MetaWRAP	120	190	218	70	28	marine reassembly
-McDevol	12	18	19	6	1	strain pooled
 VAMB	14	18	18	4	0	strain pooled
+SemiBin2	14	20	22	6	2	strain pooled
 COMEBin	12	16	18	4	2	strain pooled
 GenomeFace	13	19	20	6	1	strain pooled
+TaxVAMB	9	13	18	4	5	strain pooled
+TaxVAMB_wo_taxometer	9	17	19	8	2	strain pooled
 MetaBAT2	14	17	19	3	2	strain pooled
-CONCOCT	12	15	16	3	1	strain pooled
-MaxBin2	8	13	14	5	1	strain pooled
-MetaWRAP	14	19	20	5	1	strain pooled
-McDevol	13	19	19	6	0	strain reassembly
 VAMB	14	18	18	4	0	strain reassembly
+SemiBin2	13	20	22	7	2	strain reassembly
 COMEBin	12	16	18	4	2	strain reassembly
 GenomeFace	13	18	19	5	1	strain reassembly
+TaxVAMB	9	13	18	4	5	strain reassembly
+TaxVAMB_wo_taxometer	8	16	18	8	2	strain reassembly
 MetaBAT2	14	17	19	3	2	strain reassembly
-CONCOCT	12	16	16	4	0	strain reassembly
-MaxBin2	9	12	14	3	2	strain reassembly
-MetaWRAP	14	19	19	5	0	strain reassembly
-McDevol	19	40	43	21	3	plant pooled
 VAMB	20	38	40	18	2	plant pooled
+SemiBin2	20	49	56	29	7	plant pooled
 COMEBin	23	49	54	26	5	plant pooled
 GenomeFace	17	41	55	24	14	plant pooled
+TaxVAMB	25	40	51	15	11	plant pooled
+TaxVAMB_wo_taxometer	13	37	51	24	14	plant pooled
 MetaBAT2	22	47	49	25	2	plant pooled
-CONCOCT	12	35	40	23	5	plant pooled
-MaxBin2	16	42	45	26	3	plant pooled
-MetaWRAP	25	54	60	29	6	plant pooled
-McDevol	23	43	47	20	4	plant reassembly
 VAMB	23	39	41	16	2	plant reassembly
+SemiBin2	22	53	59	31	6	plant reassembly
 COMEBin	28	55	58	27	3	plant reassembly
 GenomeFace	21	42	55	21	13	plant reassembly
+TaxVAMB	25	47	54	22	7	plant reassembly
+TaxVAMB_wo_taxometer	14	41	55	27	14	plant reassembly
 MetaBAT2	25	48	49	23	1	plant reassembly
-CONCOCT	17	38	43	21	5	plant reassembly
-MaxBin2	22	44	48	22	4	plant reassembly
-MetaWRAP	27	54	59	27	5	plant reassembly
+VAMB	142	331	416	189	85	humangut
+SemiBin2	168	417	526	249	109	humangut
+COMEBin	132	430	575	298	145	humangut
+GenomeFace	164	351	454	187	103	humangut
+TaxVAMB	128	347	456	219	109	humangut
+TaxVAMB_wo_taxometer	35	107	202	72	95	humangut
+MetaBAT2	47	177	271	130	94	humangut
+VAMB	136	342	424	206	82	humangut reassembly
+SemiBin2	160	440	544	280	104	humangut reassembly
+COMEBin	145	452	597	307	145	humangut reassembly
+GenomeFace	168	356	464	188	108	humangut reassembly
+TaxVAMB	137	368	476	231	108	humangut reassembly
+TaxVAMB_wo_taxometer	35	119	212	84	93	humangut reassembly
+MetaBAT2	43	177	270	134	93	humangut reassembly
+VAMB	31	78	92	47	14	neonatal
+SemiBin2	48	85	104	37	19	neonatal
+COMEBin	53	93	111	40	18	neonatal
+GenomeFace	30	65	86	35	21	neonatal
+TaxVAMB	26	72	98	46	26	neonatal
+TaxVAMB_wo_taxometer	23	75	92	52	17	neonatal
+MetaBAT2	6	12	16	6	4	neonatal
+VAMB	38	75	91	37	16	neonatal reassembly
+SemiBin2	39	90	112	51	22	neonatal reassembly
+COMEBin	54	94	112	40	18	neonatal reassembly
+GenomeFace	34	69	89	35	20	neonatal reassembly
+TaxVAMB	33	76	104	43	28	neonatal reassembly
+TaxVAMB_wo_taxometer	27	74	89	47	15	neonatal reassembly
+MetaBAT2	6	12	17	6	5	neonatal reassembly
+VAMB	2	9	18	7	9	blacksoil
+SemiBin2	14	66	104	52	38	blacksoil
+COMEBin	13	73	127	60	54	blacksoil
+GenomeFace	3	20	37	17	17	blacksoil
+TaxVAMB	3	20	31	17	11	blacksoil
+TaxVAMB_wo_taxometer	0	2	7	2	5	blacksoil
+MetaBAT2	2	14	24	12	10	blacksoil
+VAMB	1	11	18	10	7	blacksoil reassembly
+SemiBin2	15	66	107	51	41	blacksoil reassembly
+COMEBin	27	86	130	59	44	blacksoil reassembly
+GenomeFace	2	20	33	18	13	blacksoil reassembly
+TaxVAMB	4	20	27	16	7	blacksoil reassembly
+TaxVAMB_wo_taxometer	0	6	10	6	4	blacksoil reassembly
+MetaBAT2	3	15	28	12	13	blacksoil reassembly

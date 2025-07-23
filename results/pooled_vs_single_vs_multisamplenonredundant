@@ -1,46 +1,127 @@
 Tools	High-quality	Medium-quality	Low-quality	Medium	Low	Dataset
-McDevol	98	139	155	41	16	marine pooled
-McDevol	68	79	80	11	1	marine multisample nr
-McDevol	28	37	45	9	8	marine single
-VAMB	105	139	148	34	9	marine pooled
-VAMB	63	73	78	10	5	marine multisample nr
-VAMB	27	39	45	12	6	marine single
-COMEBin	107	158	182	51	24	marine pooled
-COMEBin	112	136	141	24	5	marine multisample nr
-COMEBin	24	35	43	11	8	marine single
-GenomeFace	105	150	166	45	16	marine pooled
-GenomeFace	80	110	129	30	19	marine multisample nr
-GenomeFace	25	40	47	15	7	marine single
-MetaBAT2	100	142	161	42	19	marine pooled
-MetaBAT2	29	44	65	15	21	marine multisample nr
-MetaBAT2	27	39	45	12	6	marine single
-McDevol	11	13	14	2	1	strain pooled
-McDevol	14	15	16	1	1	strain multisample nr
-McDevol	1	2	2	1	0	strain single
-VAMB	12	13	13	1	0	strain pooled
-VAMB	13	14	16	1	2	strain multisample nr
-VAMB	1	2	2	1	0	strain single
-COMEBin	9	11	13	2	2	strain pooled
-COMEBin	15	18	31	3	13	strain multisample nr
-COMEBin	1	1	2	0	1	strain single
-GenomeFace	10	12	13	2	1	strain pooled
-GenomeFace	13	16	16	3	0	strain multisample nr
-GenomeFace	1	2	2	1	0	strain single
-MetaBAT2	9	12	13	3	1	strain pooled
-MetaBAT2	7	11	13	4	2	strain multisample nr
-MetaBAT2	1	2	2	1	0	strain single
-McDevol	30	41	41	11	0	plant pooled
-McDevol	19	30	34	11	4	plant multisample nr
-McDevol	3	7	10	4	3	plant single
-VAMB	31	46	49	15	3	plant pooled
-VAMB	24	32	34	8	2	plant multisample nr
-VAMB	5	11	15	6	4	plant single
-COMEBin	31	50	57	19	7	plant pooled
-COMEBin	20	40	50	20	10	plant multisample nr
-COMEBin	5	8	8	3	0	plant single
-GenomeFace	26	42	52	16	10	plant pooled
-GenomeFace	27	33	39	6	6	plant multisample nr
-GenomeFace	3	7	9	4	2	plant single
-MetaBAT2	24	42	47	18	5	plant pooled
-MetaBAT2	13	21	25	8	4	plant multisample nr
-MetaBAT2	4	7	11	3	4	plant single
+VAMB	109	158	172	49	14	marine_pooled
+VAMB	68	81	87	13	6	marine_multisample
+VAMB	50	63	68	13	5	marine_single
+SemiBin2	96	165	198	69	33	marine_pooled
+SemiBin2	69	120	142	51	22	marine_multisample
+SemiBin2	69	105	116	36	11	marine_single
+COMEBin	105	170	197	65	27	marine_pooled
+COMEBin	79	118	139	39	21	marine_multisample
+COMEBin	76	110	130	34	20	marine_single
+GenomeFace	108	168	199	60	31	marine_pooled
+GenomeFace	72	104	118	32	14	marine_multisample
+GenomeFace	54	80	95	26	15	marine_single
+TaxVAMB	111	178	211	67	33	marine_pooled
+TaxVAMB	77	103	117	26	14	marine_multisample
+TaxVAMB	75	107	119	32	12	marine_single
+TaxVAMB_notaxo	108	172	207	64	35	marine_pooled
+TaxVAMB_notaxo	75	103	115	28	12	marine_multisample
+TaxVAMB_notaxo	74	105	114	31	9	marine_single
+MetaBAT2	110	167	198	57	31	marine_pooled
+MetaBAT2	49	90	109	41	19	marine_multisample
+MetaBAT2	59	91	105	32	14	marine_single
+VAMB	14	18	18	4	0	strain_pooled
+VAMB	27	40	47	13	7	strain_multisample
+VAMB	21	30	41	9	11	strain_single
+SemiBin2	14	20	22	6	2	strain_pooled
+SemiBin2	26	96	107	70	11	strain_multisample
+SemiBin2	25	95	108	70	13	strain_single
+COMEBin	12	16	18	4	2	strain_pooled
+COMEBin	22	33	42	11	9	strain_multisample
+COMEBin	27	75	89	48	14	strain_single
+GenomeFace	13	19	20	6	1	strain_pooled
+GenomeFace	23	44	58	21	14	strain_multisample
+GenomeFace	26	59	84	33	25	strain_single
+TaxVAMB	9	13	18	4	5	strain_pooled
+TaxVAMB	17	35	45	18	10	strain_multisample
+TaxVAMB	19	28	36	9	8	strain_single
+TaxVAMB_notaxo	9	17	19	8	2	strain_pooled
+TaxVAMB_notaxo	25	39	46	14	7	strain_multisample
+TaxVAMB_notaxo	22	28	31	6	3	strain_single
+MetaBAT2	14	17	19	3	2	strain_pooled
+MetaBAT2	14	26	57	12	31	strain_multisample
+MetaBAT2	14	27	27	13	0	strain_single
+VAMB	20	38	40	18	2	plant_pooled
+VAMB	30	41	42	11	1	plant_multisample
+VAMB	21	31	32	10	1	plant_single
+SemiBin2	20	49	56	29	7	plant_pooled
+SemiBin2	31	48	55	17	7	plant_multisample
+SemiBin2	27	41	46	14	5	plant_single
+COMEBin	23	49	54	26	5	plant_pooled
+COMEBin	27	46	51	19	5	plant_multisample
+COMEBin	33	46	51	13	5	plant_single
+GenomeFace	17	41	55	24	14	plant_pooled
+GenomeFace	34	43	50	9	7	plant_multisample
+GenomeFace	20	37	43	17	6	plant_single
+TaxVAMB	25	40	51	15	11	plant_pooled
+TaxVAMB	27	46	51	19	5	plant_multisample
+TaxVAMB	22	36	37	14	1	plant_single
+TaxVAMB_notaxo	13	37	51	24	14	plant_pooled
+TaxVAMB_notaxo	24	40	43	16	3	plant_multisample
+TaxVAMB_notaxo	17	33	39	16	6	plant_single
+MetaBAT2	22	47	49	25	2	plant_pooled
+MetaBAT2	19	37	43	18	6	plant_multisample
+MetaBAT2	20	40	43	20	3	plant_single
+VAMB	142	331	416	189	85	humangut_pooled
+VAMB	211	463	560	252	97	humangut_multisample
+VAMB	211	425	478	214	53	humangut_single
+SemiBin2	168	417	526	249	109	humangut_pooled
+SemiBin2	416	796	959	380	163	humangut_multisample
+SemiBin2	383	700	848	317	148	humangut_single
+COMEBin	132	430	575	298	145	humangut_pooled
+COMEBin	527	853	998	326	145	humangut_multisample
+COMEBin	489	806	939	317	133	humangut_single
+GenomeFace	164	351	454	187	103	humangut_pooled
+GenomeFace	451	743	860	292	117	humangut_multisample
+GenomeFace	305	568	667	263	99	humangut_single
+TaxVAMB	128	347	456	219	109	humangut_pooled
+TaxVAMB	263	558	678	295	120	humangut_multisample
+TaxVAMB	158	361	485	203	124	humangut_single
+TaxVAMB_notaxo	35	107	202	72	95	humangut_pooled
+TaxVAMB_notaxo	87	242	362	155	120	humangut_multisample
+TaxVAMB_notaxo	85	222	312	137	90	humangut_single
+MetaBAT2	47	177	271	130	94	humangut_pooled
+MetaBAT2	44	159	242	115	83	humangut_multisample
+MetaBAT2	12	101	190	89	89	humangut_single
+VAMB	2	9	18	7	9	blacksoil_pooled
+VAMB	0	3	4	3	1	blacksoil_multisample
+VAMB	2	5	7	3	2	blacksoil_single
+SemiBin2	14	66	104	52	38	blacksoil_pooled
+SemiBin2	3	10	22	7	12	blacksoil_multisample
+SemiBin2	5	10	21	5	11	blacksoil_single
+COMEBin	13	73	127	60	54	blacksoil_pooled
+COMEBin	4	13	34	9	21	blacksoil_multisample
+COMEBin	5	16	34	11	18	blacksoil_single
+GenomeFace	3	20	37	17	17	blacksoil_pooled
+GenomeFace	1	3	7	2	4	blacksoil_multisample
+GenomeFace	0	3	4	3	1	blacksoil_single
+TaxVAMB	3	20	31	17	11	blacksoil_pooled
+TaxVAMB	0	3	5	3	2	blacksoil_multisample
+TaxVAMB	0	0	5	0	5	blacksoil_single
+TaxVAMB_notaxo	0	2	7	2	5	blacksoil_pooled
+TaxVAMB_notaxo	0	0	1	0	1	blacksoil_multisample
+TaxVAMB_notaxo	0	0	2	0	2	blacksoil_single
+MetaBAT2	2	14	24	12	10	blacksoil_pooled
+MetaBAT2	1	7	11	6	4	blacksoil_multisample
+MetaBAT2	0	7	18	7	11	blacksoil_single
+VAMB	31	78	92	47	14	neonatal_pooled
+VAMB	136	177	184	41	7	neonatal_multisample
+VAMB	47	55	59	8	4	neonatal_single
+SemiBin2	48	85	104	37	19	neonatal_pooled
+SemiBin2	183	224	241	41	17	neonatal_multisample
+SemiBin2	154	202	223	48	21	neonatal_single
+COMEBin	53	93	111	40	18	neonatal_pooled
+COMEBin	178	222	242	44	20	neonatal_multisample
+COMEBin	129	172	188	43	16	neonatal_single
+GenomeFace	30	65	86	35	21	neonatal_pooled
+GenomeFace	172	212	224	40	12	neonatal_multisample
+GenomeFace	143	185	195	42	10	neonatal_single
+TaxVAMB	26	72	98	46	26	neonatal_pooled
+TaxVAMB	114	179	214	65	35	neonatal_multisample
+TaxVAMB	124	169	191	45	22	neonatal_single
+TaxVAMB_notaxo	23	75	92	52	17	neonatal_pooled
+TaxVAMB_notaxo	101	173	197	72	24	neonatal_multisample
+TaxVAMB_notaxo	130	175	194	45	19	neonatal_single
+MetaBAT2	6	12	16	6	4	neonatal_pooled
+MetaBAT2	3	9	20	6	11	neonatal_multisample
+MetaBAT2	9	31	54	22	23	neonatal_single
