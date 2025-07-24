@@ -2,14 +2,15 @@
 
 Create a Snakemake environment (preferably using conda, [https://anaconda.org/bioconda/snakemake](https://anaconda.org/bioconda/snakemake)) to run the Snakemake pipeline. Singularity container platform should be preinstalled. To reproduce the results, install the binning tools and assessment tool used here, namely:
 
-- **McDevol** (v0.1.0, [https://github.com/soedinglab/McDevol.git](https://github.com/soedinglab/McDevol.git))
 - **VAMB** (v4.1.3, [https://github.com/RasmussenLab/vamb.git](https://github.com/RasmussenLab/vamb.git))
+- **SemiBin2** (v2.2.0, [https://github.com/BigDataBiology/SemiBin.git](https://github.com/BigDataBiology/SemiBin.git))
 - **COMEBin** (v1.0.4, [https://github.com/ziyewang/COMEBin.git](https://github.com/ziyewang/COMEBin.git))
 - **GenomeFace** (prerelease, [https://gist.github.com/richardlett/f56156631ea8167983f6e670b119a767](https://gist.github.com/richardlett/f56156631ea8167983f6e670b119a767))
+- **TaxVAMB** (v5.0.4, [https://github.com/RasmussenLab/vamb.git](https://github.com/RasmussenLab/vamb.git))
 - **MetaBAT2** (v2.17, [https://anaconda.org/bioconda/metabat2](https://anaconda.org/bioconda/metabat2))
 - **CheckM2** (v1.0.3, [https://github.com/chklovski/CheckM2.git](https://github.com/chklovski/CheckM2.git))
 
-Install these tools with version specified here as instructed in their respective repositories (recommended). Otherwise, use the `.yml` files in the `environments` folder for the conda environments used in this study. For McDevol, set the McDevol download path in `config.yaml`. Reassembly module has been tested and can work on both Linux and MacOS systesm whereas workflows for coassembly and multi-sample binning work only on Linux OS due to non-availability of some tools for MacOS.
+Install these tools with version specified here as instructed in their respective repositories (recommended). Otherwise, use the `.yml` files in the `environments` folder for the conda environments used in this study. Reassembly module has been tested and can work on both Linux and MacOS systesm whereas workflows for coassembly and multi-sample binning work only on Linux OS due to non-availability of some tools for MacOS.
 
 ####  Configuring paths for workflow
 Set correct paths in `config.yaml` of respective workflows before start running.
@@ -19,8 +20,6 @@ Set correct paths in `config.yaml` of respective workflows before start running.
 `UTILPATH`: Specifies the path to the utility directory and contains helper scripts for binning benchmarking tasks. It is located in download directory of binning_benchmarking. (eg. <downloadpath>/binning_benchmarking/util)
 
 `ENVIRONMENT`: Specifies environment path to find MetaBAT2 environment file (`.yml`), can be found at <downloadpath>/binning_benchmarking/workflow/environments.
-
-`MCDEVOLPATH`: Specifies the location of the McDevol tool which can be found in <mcdevoldownloadpath>/mcdevol.
 
 `SPADESPATH`: Specifies the path to executable file of SPAdes assembler.
 
