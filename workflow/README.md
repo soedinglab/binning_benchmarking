@@ -32,7 +32,7 @@ Use the command below:
 snakemake --config dataset=<datasetname> mode=pooled threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
 ```
 ![workflow_coassembly](https://github.com/user-attachments/assets/971796e3-8bb5-4a64-87b6-22eb2f8befc3)
-#### To Run the multi-sample binning pipeline
+#### To run the multi-sample binning pipeline
 Navigate to \`workflow_multisample\` and use the command below:
 
 ```
@@ -41,7 +41,7 @@ snakemake --config dataset=<datasetname> mode=multisample threads=24 readpath=<f
 Bins have to be de-replicated or selected the best bin per genome based on gold-standard mapping before subjecting them to assessment.
 ![workflow_multisample](https://github.com/user-attachments/assets/9f3a312c-07f4-40bf-8b69-6de72ec43099)
 
-#### Reassembly bins
+#### Post-binning reassembly bins
 Reassembly is performed using contigs in the bin and reads mapped to those contigs from all samples using SPAdes assembler (https://github.com/ablab/spades/releases/tag/v4.0.0).
 
 ```
