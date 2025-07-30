@@ -10,7 +10,7 @@ Create a Snakemake environment (preferably using conda, [https://anaconda.org/bi
 - **MetaBAT2** (v2.17, [https://anaconda.org/bioconda/metabat2](https://anaconda.org/bioconda/metabat2))
 - **CheckM2** (v1.0.3, [https://github.com/chklovski/CheckM2.git](https://github.com/chklovski/CheckM2.git))
 
-Install these tools with version specified here as instructed in their respective repositories (recommended). Otherwise, use the `.yml` files in the `environments` folder for the conda environments used in this study. Reassembly module has been tested and can work on both Linux and MacOS systesm whereas workflows for coassembly and multi-sample binning work only on Linux OS due to non-availability of some tools for MacOS.
+Install these tools with version specified here as instructed in their respective repositories (recommended). Otherwise, use the `.yml` files in the `environments` folder for the conda environments used in this study. Reassembly module has been tested and can work on both Linux and MacOS systesm whereas workflows for coassembly multi-sample and multi-sample binning work only on Linux OS due to non-availability of some tools for MacOS.
 
 ####  Configuring paths for workflow
 Set correct paths in `config.yaml` of respective workflows before start running.
@@ -19,11 +19,11 @@ Set correct paths in `config.yaml` of respective workflows before start running.
 
 `UTILPATH`: Specifies the path to the utility directory and contains helper scripts for binning benchmarking tasks. It is located in download directory of binning_benchmarking. (eg. <downloadpath>/binning_benchmarking/util)
 
-`ENVIRONMENT`: Specifies environment path to find MetaBAT2 environment file (`.yml`), can be found at <downloadpath>/binning_benchmarking/workflow/environments.
+`ENVIRONMENT`: Specifies environment path to find environment file for binning tools (`.yml`), can be found at <downloadpath>/binning_benchmarking/workflow/environments.
 
 `SPADESPATH`: Specifies the path to executable file of SPAdes assembler.
 
-**! Note:** argument inputs for files and folders should contain `absolute path` for all workflows.  
+**! Note:** argument inputs for files and folders should contain `absolute path` for all workflows. If the conda environment for any tool fails to create during a Snakemake run, you can manually create it using the following command `conda env create --file=<tool>_env.yml`. After creating the environment manually, update the corresponding Snakemake rule to reference the environment by its name (`<tool_env>`) instead of the environment YAML path (`f{ENVIRONMENT}/comebin_env.yml`).  
 
 #### To Run the coassembly binning pipeline
 Use the command below:

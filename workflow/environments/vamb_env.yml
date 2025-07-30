@@ -2,17 +2,10 @@ name: vamb_env
 channels:
   - conda-forge
   - bioconda
-  - ursky
   - defaults
 dependencies:
   - python=3.10
   - pip
   - pip:
-      - numpy==1.24.2
-      - nvidia-cublas-cu11==11.10.3.66
-      - nvidia-cuda-nvrtc-cu11==11.7.99
-      - nvidia-cuda-runtime-cu11==11.7.99
-      - nvidia-cudnn-cu11==8.5.0.96
-      - pycoverm==0.6.0
-      - torch==1.13.1
-      - typing-extensions==4.12.2
+      - torch
+      - vamb==4.1.3

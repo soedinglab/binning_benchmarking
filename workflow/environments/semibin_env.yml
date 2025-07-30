@@ -1,4 +1,4 @@
-name: comebin_env
+name: semibin_env
 channels:
   - conda-forge
   - bioconda
@@ -6,7 +6,8 @@ channels:
   - nvidia
   - defaults
 dependencies:
-  - comebin
-  - pip
-  - pip:
-      - torch
+  - bedtools
+  - hmmer
+  - prodigal
+  - samtools
+  - semibin=2.2.0

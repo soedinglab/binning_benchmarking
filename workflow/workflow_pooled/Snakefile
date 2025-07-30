@@ -1,3 +1,4 @@
+from snakemake.io import directory
 configfile: 'config.yaml'
 
 # Access command line paramters
@@ -17,7 +18,13 @@ SAMPLE_IDS = glob_wildcards(f"{READ_PATH}/{{id,[^/]+}}.fastq").id
 
 rule all:
     input:
-        f"{ASSEMBLY_PATH}/checkm2_results"
+        # f"{ASSEMBLY_PATH}/checkm2_results"
+        f"{ASSEMBLY_PATH}/metabat2_results",
+        f"{ASSEMBLY_PATH}/semibin2_results",
+        f"{ASSEMBLY_PATH}/genomeface_results",
+        f"{ASSEMBLY_PATH}/vamb_results",
+        f"{ASSEMBLY_PATH}/taxvamb_results",
+        f"{ASSEMBLY_PATH}/comebin_results/comebin_res/comebin_res_bins"
 
 rule assembly:
     input:
@@ -27,7 +34,7 @@ rule assembly:
         assemblyseq = f"{ASSEMBLY_PATH}/megahit_out/final.contigs.fa"
     threads: nthread
     run:
-        comma_separated_reads = ",".join(input.reads)
+        comma_separated_reads = ",".join(input.reads) 
         shell(f"""
             rm -rf {output.assemblypath}
 
@@ -104,23 +111,45 @@ rule metabat2_run:
             -a {input.abund} -o $outputfile -t {threads} -m 1500
         """
 
-rule mcdevol_run:
+# rule mcdevol_run:
+#     input:
+#         abund=abundfile,
+#         contigseq=contigseq
+#     output:
+#         outputdir = directory(f"{ASSEMBLY_PATH}/mcdevol_results"),
+#         bindir =  directory(f"{ASSEMBLY_PATH}/mcdevol_results/bins")
+#     threads: nthread
+#     conda:
+#         "mcdevol_env"
+#     shell:
+#         """
+#         python detect_gpu.py
+#         python {mcdevolpath}/mcdevol.py \
+#             -c {input.contigseq} -o {output.outputdir} \
+#             -a {input.abund} --abundformat metabat -n {threads} -l 500
+#         """
+
+rule semibin2_run:
     input:
-        abund=abundfile,
-        contigseq=contigseq
+        contigseq = f"{ASSEMBLY_PATH}/megahit_out/final.contigs.fa",
+        sortedbam = expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam", id=SAMPLE_IDS)
     output:
-        outputdir = directory(f"{ASSEMBLY_PATH}/mcdevol_results"),
-        bindir =  directory(f"{ASSEMBLY_PATH}/mcdevol_results/bins")
+        outputdir = directory(f"{ASSEMBLY_PATH}/semibin2_results")
     threads: nthread
+    resources:
+         mem_mb=10000
     conda:
-        "mcdevol_env"
+        f"{environmentpath}/semibin_env.yml"
     shell:
         """
-        python detect_gpu.py
-        python {mcdevolpath}/mcdevol.py \
-            -c {input.contigseq} -o {output.outputdir} \
-            -a {input.abund} --abundformat metabat -n {threads} -l 500
+        outputfile="{output.outputdir}/bins/output_bins"
+
+        SemiBin2 generate_sequence_features_single -i {input.contigseq} -b {ALIGNMENT_PATH}/*.bam -o {output.outputdir} --min-len {minlength} -p {threads}
+        SemiBin2 train_self --data {output.outputdir}/data.csv --data-split {output.outputdir}/data_split.csv -o {output.outputdir} -p {threads}
+        SemiBin2 bin_short -i {input.contigseq} --model {output.outputdir}/model.pt --data {output.outputdir}/data.csv -o {output.outputdir}/bins --minfasta-kbs 200 --min-len {minlength} -p {threads}
+        gunzip {output.outputdir}/bins/output_bins/*
         """
+
 
 rule sortedbams:
     input:
@@ -155,6 +184,7 @@ rule genomeface_run:
     output:
         outputdir = directory(f"{ASSEMBLY_PATH}/genomeface_results")
     conda:
+        # f"{environmentpath}/genomeface_env.yml"
         "genomeface_env"
     threads: nthread
     shell:
@@ -176,15 +206,46 @@ rule vamb_run:
         outputdir = directory(f"{ASSEMBLY_PATH}/vamb_results")
     threads: nthread
     conda:
-        "vamb_env"
+        f"{environmentpath}/vamb_env.yml"
     shell:
         """
         python detect_gpu.py
-        # rm -rf {ASSEMBLY_PATH}/vamb_results
         vamb --outdir {ASSEMBLY_PATH}/vamb_results \
             --fasta  {input.contigseq} \
             --bamfiles {ALIGNMENT_PATH}/*.bam -m {minlength} \
             --minfasta 200000 --cuda -p {threads}
+        """
+
+rule taxvamb_run:
+    input:
+        contigseq = f"{ASSEMBLY_PATH}/megahit_out/final.contigs.fa",
+        sortedbam = expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam", id=SAMPLE_IDS)
+    params:
+        METABULIOP = config['paths']['METABULIOP']
+    output:
+        outputdir1 = directory(f"{ASSEMBLY_PATH}/taxvamb_results"),
+        outputdir2 = directory(f"{ASSEMBLY_PATH}/taxvamb_results_notaxo")
+    threads: nthread
+    conda:
+        f"{environmentpath}/taxvamb_env.yml"
+    shell:
+        """
+        taxconverter metabuli -c {params.METABULIOP}/*_classifications.tsv \
+            -r {params.METABULIOP}/*_report.tsv \
+            -o {params.METABULIOP}/taxonomy_result.tsv
+
+        vamb bin taxvamb --outdir {output.outputdir1} \
+            --fasta {input.contigseq} \
+            --bamfiles {ALIGNMENT_PATH}/*.bam \
+            --taxonomy {params.METABULIOP}/taxonomy_result.tsv \
+            -m {minlength} --minfasta 200000 --cuda -p {threads}
+        
+        vamb bin taxvamb --outdir {output.outputdir2} \
+            --fasta {input.contigseq} \
+            --bamfiles {ALIGNMENT_PATH}/*.bam \
+            --taxonomy {params.METABULIOP}/taxonomy_result.tsv \
+            -m {minlength} --minfasta 200000 --cuda -p {threads} \
+            --no_predictor
         """
 
 rule comebin_run:
@@ -195,8 +256,10 @@ rule comebin_run:
         outputdir=directory(f"{ASSEMBLY_PATH}/comebin_results"),
         bindir = directory(f"{ASSEMBLY_PATH}/comebin_results/comebin_res/comebin_res_bins")
     threads: nthread
+    resources:
+         mem_mb=10000
     conda:
-        "comebin_env"
+        f"{environmentpath}/comebin_env.yml"
     shell:
         """
         python detect_gpu.py
@@ -204,23 +267,29 @@ rule comebin_run:
             -a {input.contigseq} -p {ALIGNMENT_PATH} -o {output.outputdir} -t {threads}
         """
 
-rule checkm2_run:
-    input:
-        metabat2_bins = f"{ASSEMBLY_PATH}/metabat2_results",
-        mcdevol_bins = f"{ASSEMBLY_PATH}/mcdevol_results/bins",
-        genomeface_bins = f"{ASSEMBLY_PATH}/genomeface_results",
-        vamb_bins = f"{ASSEMBLY_PATH}/vamb_results",
-        comebin_bins = f"{ASSEMBLY_PATH}/comebin_results/comebin_res/comebin_res_bins"
-    output:
-        checkm2_results = directory(f"{ASSEMBLY_PATH}/checkm2_results")
-    threads: nthread
-    conda:
-        "checkm2_env"        
-    shell:
-        """
-        checkm2 predict -i {input.metabat2_bins} -o {output.checkm2_results}/metabat2 -x fa --thread {threads}
-        checkm2 predict -i {input.mcdevol_bins} -o {output.checkm2_results}/mcdevol -x fasta --thread {threads}
-        checkm2 predict -i {input.genomeface_bins} -o {output.checkm2_results}/genomeface -x fasta --thread {threads}
-        checkm2 predict -i {input.vamb_bins}/bins -o {output.checkm2_results}/vamb -x fna --thread {threads}
-        checkm2 predict -i {input.comebin_bins} -o {output.checkm2_results}/comebin -x fa --thread {threads}
-        """
+# rule checkm2_run:
+#     input:
+#         metabat2_bins = f"{ASSEMBLY_PATH}/metabat2_results",
+#         # mcdevol_bins = f"{ASSEMBLY_PATH}/mcdevol_results/bins",
+#         semibin2_bins = f"{ASSEMBLY_PATH}/semibin2_results",
+#         genomeface_bins = f"{ASSEMBLY_PATH}/genomeface_results",
+#         vamb_bins = f"{ASSEMBLY_PATH}/vamb_results",
+#         taxvamb_bins = f"{ASSEMBLY_PATH}/taxvamb_results",
+#         taxvamb_bins_notaxo = f"{ASSEMBLY_PATH}/taxvamb_results_notaxo",
+#         comebin_bins = f"{ASSEMBLY_PATH}/comebin_results/comebin_res/comebin_res_bins"
+#     output:
+#         checkm2_results = directory(f"{ASSEMBLY_PATH}/checkm2_results")
+#     threads: nthread
+#     conda:
+#         f"{environmentpath}/checkm2_env.yml"
+#     shell:
+#         """
+#         checkm2 predict -i {input.metabat2_bins} -o {output.checkm2_results}/metabat2 -x fa --thread {threads}
+#         checkm2 predict -i {input.semibin2_bins}/bins/output_bins -o {output.checkm2_results}/semibin2 -x fa --thread {threads}
+#         checkm2 predict -i {input.vamb_bins}/bins -o {output.checkm2_results}/vamb -x fna --thread {threads}
+#         checkm2 predict -i {input.taxvamb_bins}/bins -o {output.checkm2_results}/taxvamb -x fna --thread {threads}
+#         checkm2 predict -i {input.taxvamb_bins_notaxo}/bins -o {output.checkm2_results}/taxvamb_notaxo -x fna --thread {threads}
+#         checkm2 predict -i {input.comebin_bins} -o {output.checkm2_results}/comebin -x fa --thread {threads}
+#         checkm2 predict -i {input.genomeface_bins} -o {output.checkm2_results}/genomeface -x fasta --thread {threads}
+#         """
+        # checkm2 predict -i {input.mcdevol_bins} -o {output.checkm2_results}/mcdevol -x fasta --thread {threads}

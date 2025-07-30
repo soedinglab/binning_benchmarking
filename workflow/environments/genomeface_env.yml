@@ -8,10 +8,10 @@ channels:
   - defaults
 dependencies:
   - genomeface
-  - cuda-version=11.7
-  - cuda-cudart=11.8
-  - cuda-nvrtc=11.8
-  - cuda-python=11.8
   - cudatoolkit=11.7
-  - cudf=22.12
   - cudnn=8.9
+  - pip
+  - pip:
+      - pyhmmer==0.7.4
+      
+  

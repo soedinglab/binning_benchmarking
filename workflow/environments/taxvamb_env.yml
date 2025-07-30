@@ -1,0 +1,17 @@
+name: taxvamb_env
+channels:
+  - conda-forge
+  - bioconda
+  - ursky
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pycoverm
+  - pyhmmer
+  - pyrodigal
+  - vamb==5.0.4
+  - pip:
+      - torch
+      - taxconverter
