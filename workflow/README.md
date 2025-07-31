@@ -31,7 +31,8 @@ Use the command below:
 ```
 snakemake --config dataset=<datasetname> mode=pooled threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
 ```
-![workflow_coassembly](https://github.com/user-attachments/assets/971796e3-8bb5-4a64-87b6-22eb2f8befc3)
+![workflow_coassembly](https://github.com/user-attachments/assets/3a8c8e55-aecc-47a4-939f-72f366abff26)
+
 #### To run the multi-sample binning pipeline
 Navigate to \`workflow_multisample\` and use the command below:
 
@@ -39,7 +40,8 @@ Navigate to \`workflow_multisample\` and use the command below:
 snakemake --config dataset=<datasetname> mode=multisample threads=24 readpath=<fastaqfilespath> outputpath=<outputpath> minlength=1000 --cores=24 --use-conda
 ```
 Bins have to be de-replicated or selected the best bin per genome based on gold-standard mapping before subjecting them to assessment.
-![workflow_multisample](https://github.com/user-attachments/assets/9f3a312c-07f4-40bf-8b69-6de72ec43099)
+![workflow_multisample](https://github.com/user-attachments/assets/65f05f4c-e3f1-4126-afeb-097846b2101d)
+
 
 
 **! Note:** to run taxvamb with taxonomy labels, the workflows use metabuli, which requires a reference database (e.g, GTDB). You have to download the database and set the DB path in the `config` file.
