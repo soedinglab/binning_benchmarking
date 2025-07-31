@@ -18,7 +18,6 @@ SAMPLE_IDS = glob_wildcards(f"{READ_PATH}/{{id,[^/]+}}.fastq").id
 
 rule all:
     input:
-        # f"{ASSEMBLY_PATH}/checkm2_results"
         f"{ASSEMBLY_PATH}/metabat2_results",
         f"{ASSEMBLY_PATH}/semibin2_results",
         f"{ASSEMBLY_PATH}/genomeface_results",
@@ -184,7 +183,6 @@ rule genomeface_run:
     output:
         outputdir = directory(f"{ASSEMBLY_PATH}/genomeface_results")
     conda:
-        # f"{environmentpath}/genomeface_env.yml"
         "genomeface_env"
     threads: nthread
     shell:
@@ -221,6 +219,7 @@ rule taxvamb_run:
         contigseq = f"{ASSEMBLY_PATH}/megahit_out/final.contigs.fa",
         sortedbam = expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam", id=SAMPLE_IDS)
     params:
+        METABULIDB = config['paths']['METABULIDB'],
         METABULIOP = config['paths']['METABULIOP']
     output:
         outputdir1 = directory(f"{ASSEMBLY_PATH}/taxvamb_results"),
@@ -230,6 +229,9 @@ rule taxvamb_run:
         f"{environmentpath}/taxvamb_env.yml"
     shell:
         """
+        metabuli classify {input.contigseq} {params.METABULIDB} \
+            {params.METABULIOP} taxonomy --seq-mode 1 --threads {threads}
+
         taxconverter metabuli -c {params.METABULIOP}/*_classifications.tsv \
             -r {params.METABULIOP}/*_report.tsv \
             -o {params.METABULIOP}/taxonomy_result.tsv
@@ -267,29 +269,3 @@ rule comebin_run:
             -a {input.contigseq} -p {ALIGNMENT_PATH} -o {output.outputdir} -t {threads}
         """
 
-# rule checkm2_run:
-#     input:
-#         metabat2_bins = f"{ASSEMBLY_PATH}/metabat2_results",
-#         # mcdevol_bins = f"{ASSEMBLY_PATH}/mcdevol_results/bins",
-#         semibin2_bins = f"{ASSEMBLY_PATH}/semibin2_results",
-#         genomeface_bins = f"{ASSEMBLY_PATH}/genomeface_results",
-#         vamb_bins = f"{ASSEMBLY_PATH}/vamb_results",
-#         taxvamb_bins = f"{ASSEMBLY_PATH}/taxvamb_results",
-#         taxvamb_bins_notaxo = f"{ASSEMBLY_PATH}/taxvamb_results_notaxo",
-#         comebin_bins = f"{ASSEMBLY_PATH}/comebin_results/comebin_res/comebin_res_bins"
-#     output:
-#         checkm2_results = directory(f"{ASSEMBLY_PATH}/checkm2_results")
-#     threads: nthread
-#     conda:
-#         f"{environmentpath}/checkm2_env.yml"
-#     shell:
-#         """
-#         checkm2 predict -i {input.metabat2_bins} -o {output.checkm2_results}/metabat2 -x fa --thread {threads}
-#         checkm2 predict -i {input.semibin2_bins}/bins/output_bins -o {output.checkm2_results}/semibin2 -x fa --thread {threads}
-#         checkm2 predict -i {input.vamb_bins}/bins -o {output.checkm2_results}/vamb -x fna --thread {threads}
-#         checkm2 predict -i {input.taxvamb_bins}/bins -o {output.checkm2_results}/taxvamb -x fna --thread {threads}
-#         checkm2 predict -i {input.taxvamb_bins_notaxo}/bins -o {output.checkm2_results}/taxvamb_notaxo -x fna --thread {threads}
-#         checkm2 predict -i {input.comebin_bins} -o {output.checkm2_results}/comebin -x fa --thread {threads}
-#         checkm2 predict -i {input.genomeface_bins} -o {output.checkm2_results}/genomeface -x fasta --thread {threads}
-#         """
-        # checkm2 predict -i {input.mcdevol_bins} -o {output.checkm2_results}/mcdevol -x fasta --thread {threads}

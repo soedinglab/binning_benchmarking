@@ -4,4 +4,5 @@ paths:
   UTILPATH: "/home/yazhini/work/binning_benchmarking/util"
   ENVIRONMENTPATH: "/home/yazhini/work/binning_benchmarking/workflow/environments"
   MCDEVOLPATH: "/home/yazhini/work/binning_tool/mcdevol"
+  METABULIDB: "/home/yazhini/work/gtdb"
   METABULIOP: "/home/yazhini/work/binning_benchmarking/workflow/data/strain_madness/strain_metabuli"

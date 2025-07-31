@@ -18,9 +18,10 @@ SAMPLE_IDS = glob_wildcards(f"{READ_PATH}/{{id,[^/]+}}.fastq").id
 rule all:
     input:
         f"{ASSEMBLY_PATH}/metabat2_filteredbins",
-        f"{ASSEMBLY_PATH}/mcdevol_results",
         f"{ASSEMBLY_PATH}/genomeface_results",
         f"{ASSEMBLY_PATH}/vamb_results",
+        f"{ASSEMBLY_PATH}/semibin2_results",
+        f"{ASSEMBLY_PATH}/taxvamb_results",
         f"{ASSEMBLY_PATH}/comebin_filteredbins"
 
 rule assembly:
@@ -124,27 +125,46 @@ rule metabat2_postprocess:
     shell:
         """
         python {utilpath}/splitfasta_bysampleids.py --input_dir {input.metabat2_results} --output_dir {input.metabat2_results}/samplewisebins --format fa
-        python {utilpath}/filterbins.py --indir {input.metabat2_results}/samplewisebins --outdir {output.filteredbins} --format fasta --binsize 10000
+        python {utilpath}/filterbins.py --indir {input.metabat2_results}/samplewisebins --outdir {output.filteredbins} --format fasta --binsize 200000
         # rm -rf {input.metabat2_results}/samplewisebins
         """
 
-rule mcdevol_run:
+# rule mcdevol_run:
+#     input:
+#         abund=abundfile,
+#         contigseq=contigseq
+#     output:
+#         outputdir = directory(f"{ASSEMBLY_PATH}/mcdevol_results")
+#     threads: nthread
+#     conda:
+#         "mcdevol_env"
+#     shell:
+#         """
+#         python detect_gpu.py
+#         python {mcdevolpath}/mcdevol.py \
+#             -c {input.contigseq} -o {output.outputdir} \
+#             -a {input.abund} --abundformat metabat -n {threads} -l 500 --multi_split
+#         python {utilpath}/filterbins.py --indir {output.outputdir}/cluster_split_bins --outdir {output.outputdir}/cluster_split_bins_filtered --binsize 200000
+#         """
+
+rule semibin2_run:
     input:
-        abund=abundfile,
-        contigseq=contigseq
+        contigseq = contigseq,
+        sortedbam = expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam", id=SAMPLE_IDS)
     output:
-        outputdir = directory(f"{ASSEMBLY_PATH}/mcdevol_results")
+        outputdir = directory(f"{ASSEMBLY_PATH}/semibin2_results")
     threads: nthread
+    resources:
+        mem_mb=20000
     conda:
-        "mcdevol_env"
+        f"{environmentpath}/semibin_env.yml"
     shell:
         """
-        python detect_gpu.py
-        python {mcdevolpath}/mcdevol.py \
-            -c {input.contigseq} -o {output.outputdir} \
-            -a {input.abund} --abundformat metabat -n {threads} -l 500 --multi_split
-        python {utilpath}/filterbins.py --indir {output.outputdir}/cluster_split_bins --outdir {output.outputdir}/cluster_split_bins_filtered --binsize 10000
+        outputfile="{output.outputdir}/bins"
+        SemiBin2 multi_easy_bin -i {input.contigseq} -b {ALIGNMENT_PATH}/*.bam -o {output.outputdir} --min-len {minlength} -p {threads} --minfasta-kbs 200 --engine gpu --separator 'C'
+        gunzip {output.outputdir}/bins/*
         """
+
 
 rule sortedbams:
     input:
@@ -196,7 +216,7 @@ rule vamb_run:
         outputdir = directory(f"{ASSEMBLY_PATH}/vamb_results")
     threads: nthread
     conda:
-        "vamb_env"
+        f"{environmentpath}/vamb_env.yml"
     shell:
         """
         python detect_gpu.py
@@ -206,6 +226,43 @@ rule vamb_run:
             --minfasta 200000 --cuda -p {threads} -o 'C'
         """
 
+rule taxvamb_run:
+    input:
+        contigseq = f"{ASSEMBLY_PATH}/single_concatenated_final.contigs.fa",
+        sortedbam = expand(f"{ALIGNMENT_PATH}/{{id}}_strobealign_sorted.bam", id=SAMPLE_IDS)
+    params:
+        METABULIDB = config['paths']['METABULIDB'],
+        METABULIOP = config['paths']['METABULIOP']
+    output:
+        outputdir1 = directory(f"{ASSEMBLY_PATH}/taxvamb_results"),
+        outputdir2 = directory(f"{ASSEMBLY_PATH}/taxvamb_results_notaxo")
+    threads: nthread
+    conda:
+        f"{environmentpath}/taxvamb_env.yml"
+    shell:
+        """
+        metabuli classify {input.contigseq} {params.METABULIDB} \
+            {params.METABULIOP} taxonomy --seq-mode 1 --threads {threads}
+  
+        taxconverter metabuli -c {params.METABULIOP}/*_classifications.tsv \
+            -r {params.METABULIOP}/*_report.tsv \
+            -o {params.METABULIOP}/taxonomy_result.tsv
+
+        vamb bin taxvamb --outdir {output.outputdir1} \
+            --fasta {input.contigseq} \
+            --bamfiles {ALIGNMENT_PATH}/*.bam \
+            --taxonomy {params.METABULIOP}/taxonomy_result.tsv \
+            -m {minlength} --minfasta 200000 --cuda \
+            -p {threads}  -o 'C'
+        
+        vamb bin taxvamb --outdir {output.outputdir2} \
+            --fasta {input.contigseq} \
+            --bamfiles {ALIGNMENT_PATH}/*.bam \
+            --taxonomy {params.METABULIOP}/taxonomy_result.tsv \
+            -m {minlength} --minfasta 200000 --cuda \
+            -p {threads} --no_predictor -o 'C'
+        """
+
 rule comebin_run:
     input:
         contigseq = contigseq,
@@ -213,8 +270,10 @@ rule comebin_run:
     output:
         outputdir = directory(f"{ASSEMBLY_PATH}/comebin_results")
     threads: nthread
+    resources:
+        mem_mb=10000
     conda:
-        "comebin_env"
+        f"{environmentpath}/comebin_env.yml"
     shell:
         """
         python detect_gpu.py
@@ -232,6 +291,6 @@ rule comebin_postprocess:
         """
         if [ -d {input.comebin_results}/samplewisebins ]; then rm -Rf {input.comebin_results}/samplewisebins; fi
         python {utilpath}/splitfasta_bysampleids.py --input_dir {input.comebin_results}/comebin_res/comebin_res_bins --output_dir {input.comebin_results}/samplewisebins --format fa
-        python {utilpath}/filterbins.py --indir {input.comebin_results}/samplewisebins --outdir {output.filteredbins} --format fasta --binsize 10000
+        python {utilpath}/filterbins.py --indir {input.comebin_results}/samplewisebins --outdir {output.filteredbins} --format fasta --binsize 200000
         rm -rf {input.comebin_results}/samplewisebins
         """
