@@ -12,6 +12,7 @@ dependencies:
   - pyhmmer
   - pyrodigal
   - vamb==5.0.4
+  - metabuli
   - pip:
       - torch
       - taxconverter
