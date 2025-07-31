@@ -161,7 +161,12 @@ rule semibin2_run:
     shell:
         """
         outputfile="{output.outputdir}/bins"
-        SemiBin2 multi_easy_bin -i {input.contigseq} -b {ALIGNMENT_PATH}/*.bam -o {output.outputdir} --min-len {minlength} -p {threads} --minfasta-kbs 200 --engine gpu --separator 'C'
+        SemiBin2 multi_easy_bin -i {input.contigseq} \
+            -b {ALIGNMENT_PATH}/*.bam \
+            -o {output.outputdir} \
+            --min-len {minlength} -p {threads} \
+            --minfasta-kbs 200 --engine gpu \
+            --separator 'C'
         gunzip {output.outputdir}/bins/*
         """
 

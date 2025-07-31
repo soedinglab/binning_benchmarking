@@ -42,7 +42,7 @@ Bins have to be de-replicated or selected the best bin per genome based on gold-
 ![workflow_multisample](https://github.com/user-attachments/assets/9f3a312c-07f4-40bf-8b69-6de72ec43099)
 
 
-**! Note:** to run taxvamb with taxonomy labels, the workflows use metabuli, which require reference database (e.g, GTDB). User has to download it and set the DB path in the config file.
+**! Note:** to run taxvamb with taxonomy labels, the workflows use metabuli, which requires a reference database (e.g, GTDB). You have to download the database and set the DB path in the `config` file.
 
 #### Post-binning reassembly bins
 Reassembly is performed using contigs in the bin and reads mapped to those contigs from all samples using SPAdes assembler (https://github.com/ablab/spades/releases/tag/v4.0.0).
